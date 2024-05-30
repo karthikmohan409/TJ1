@@ -1,0 +1,15 @@
+import 'package:equatable/equatable.dart';
+import '../../../core/app_export.dart';
+
+/// This class defines the variables used in the [iphone_14_15_pro_max_eighteen_screen],
+/// and is typically used to hold data that is passed between different parts of the application.
+class Iphone1415ProMaxEighteenModel extends Equatable {
+  Iphone1415ProMaxEighteenModel();
+
+  Iphone1415ProMaxEighteenModel copyWith() {
+    return Iphone1415ProMaxEighteenModel();
+  }
+
+  @override
+  List<Object?> get props => [];
+}
