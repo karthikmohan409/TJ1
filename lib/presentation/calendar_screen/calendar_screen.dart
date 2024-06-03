@@ -8,31 +8,20 @@ import '../../widgets/app_bar/appbar_title_iconbutton.dart';
 import '../../widgets/app_bar/custom_app_bar.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_switch.dart';
-import 'bloc/calendar_bloc.dart';
-import 'models/calendar_model.dart';
+import 'controller/calendar_controller.dart'; // ignore_for_file: must_be_immutable
 
-class CalendarScreen extends StatelessWidget {
+class CalendarScreen extends GetWidget<CalendarController> {
   const CalendarScreen({Key? key})
       : super(
           key: key,
         );
-
-  static Widget builder(BuildContext context) {
-    return BlocProvider<CalendarBloc>(
-      create: (context) => CalendarBloc(CalendarState(
-        calendarModelObj: CalendarModel(),
-      ))
-        ..add(CalendarInitialEvent()),
-      child: CalendarScreen(),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: theme.colorScheme.onPrimaryContainer.withOpacity(1),
-        appBar: _buildAppBar(context),
+        appBar: _buildAppBar(),
         body: Container(
           width: double.maxFinite,
           padding: EdgeInsets.symmetric(
@@ -41,7 +30,7 @@ class CalendarScreen extends StatelessWidget {
           ),
           child: Column(
             children: [
-              _buildTimeSection(context),
+              _buildTimeSection(),
               Spacer(),
               SizedBox(height: 61.v),
               CustomElevatedButton(
@@ -54,7 +43,7 @@ class CalendarScreen extends StatelessWidget {
                 buttonTextStyle:
                     CustomTextStyles.titleLargeOnPrimaryContainer_1,
                 onPressed: () {
-                  onTapPayment(context);
+                  onTapPayment();
                 },
               )
             ],
@@ -65,7 +54,7 @@ class CalendarScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  PreferredSizeWidget _buildAppBar(BuildContext context) {
+  PreferredSizeWidget _buildAppBar() {
     return CustomAppBar(
       centerTitle: true,
       title: Column(
@@ -105,27 +94,25 @@ class CalendarScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildTimeSection(BuildContext context) {
+  Widget _buildTimeSection() {
     return Padding(
       padding: EdgeInsets.only(right: 1.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildEndDateSection(
-            context,
             end: "lbl_date".tr,
             p21mar2024One: "lbl_21_mar_2024".tr,
             onTapCalendarthree: () {
-              onTapCalendarone(context);
+              onTapCalendarone();
             },
           ),
           SizedBox(height: 23.v),
           _buildEndDateSection(
-            context,
             end: "lbl_end".tr,
             p21mar2024One: "lbl_21_mar_2024".tr,
             onTapCalendarthree: () {
-              onTapCalendarthree(context);
+              onTapCalendarthree();
             },
           ),
           SizedBox(height: 31.v),
@@ -160,7 +147,7 @@ class CalendarScreen extends StatelessWidget {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              onTapRowtime(context);
+                              onTapRowtime();
                             },
                             child: Container(
                               width: 153.h,
@@ -175,17 +162,13 @@ class CalendarScreen extends StatelessWidget {
                                 children: [
                                   Padding(
                                     padding: EdgeInsets.only(bottom: 1.v),
-                                    child: BlocSelector<CalendarBloc,
-                                        CalendarState, String?>(
-                                      selector: (state) =>
-                                          state.calendarModelObj!.time,
-                                      builder: (context, time) {
-                                        return Text(
-                                          time ?? "",
-                                          style: CustomTextStyles
-                                              .bodyLargeBlack900_4,
-                                        );
-                                      },
+                                    child: Obx(
+                                      () => Text(
+                                        controller
+                                            .calendarModelObj.value.time.value,
+                                        style: CustomTextStyles
+                                            .bodyLargeBlack900_4,
+                                      ),
                                     ),
                                   ),
                                   CustomImageView(
@@ -199,7 +182,7 @@ class CalendarScreen extends StatelessWidget {
                           ),
                           GestureDetector(
                             onTap: () {
-                              onTapRowclockthree(context);
+                              onTapRowclockthree();
                             },
                             child: Container(
                               width: 146.h,
@@ -214,17 +197,13 @@ class CalendarScreen extends StatelessWidget {
                                 children: [
                                   Padding(
                                     padding: EdgeInsets.only(bottom: 1.v),
-                                    child: BlocSelector<CalendarBloc,
-                                        CalendarState, String?>(
-                                      selector: (state) =>
-                                          state.calendarModelObj!.time1,
-                                      builder: (context, time1) {
-                                        return Text(
-                                          time1 ?? "",
-                                          style: CustomTextStyles
-                                              .bodyLargeBlack900_4,
-                                        );
-                                      },
+                                    child: Obx(
+                                      () => Text(
+                                        controller
+                                            .calendarModelObj.value.time1.value,
+                                        style: CustomTextStyles
+                                            .bodyLargeBlack900_4,
+                                      ),
                                     ),
                                   ),
                                   CustomImageView(
@@ -278,19 +257,14 @@ class CalendarScreen extends StatelessWidget {
                   style: CustomTextStyles.bodyLargePoppinsBlack900,
                 ),
               ),
-              BlocSelector<CalendarBloc, CalendarState, bool?>(
-                selector: (state) => state.isSelectedSwitch,
-                builder: (context, isSelectedSwitch) {
-                  return CustomSwitch(
-                    margin: EdgeInsets.only(left: 11.h),
-                    value: isSelectedSwitch,
-                    onChange: (value) {
-                      context
-                          .read<CalendarBloc>()
-                          .add(ChangeSwitchEvent(value: value));
-                    },
-                  );
-                },
+              Obx(
+                () => CustomSwitch(
+                  margin: EdgeInsets.only(left: 11.h),
+                  value: controller.isSelectedSwitch.value,
+                  onChange: (value) {
+                    controller.isSelectedSwitch.value = value;
+                  },
+                ),
               )
             ],
           )
@@ -300,8 +274,7 @@ class CalendarScreen extends StatelessWidget {
   }
 
   /// Common widget
-  Widget _buildEndDateSection(
-    BuildContext context, {
+  Widget _buildEndDateSection({
     required String end,
     required String p21mar2024One,
     Function? onTapCalendarthree,
@@ -352,56 +325,56 @@ class CalendarScreen extends StatelessWidget {
   }
 
   /// Navigates to the calendarThreeScreen when the action is triggered.
-  onTapCalendarone(BuildContext context) {
-    NavigatorService.pushNamed(
+  onTapCalendarone() {
+    Get.toNamed(
       AppRoutes.calendarThreeScreen,
     );
   }
 
   /// Navigates to the calendarThreeScreen when the action is triggered.
-  onTapCalendarthree(BuildContext context) {
-    NavigatorService.pushNamed(
+  onTapCalendarthree() {
+    Get.toNamed(
       AppRoutes.calendarThreeScreen,
     );
   }
 
   /// Displays a time picker dialog and updates the selected time in the
-  /// current [calendarModelObj] object if the user selects a valid time.
+  /// [calendarModelObj] object of the current [controller] if the user
+  /// selects a valid time.
   ///
   /// This function returns a `Future` that completes with `void`.
-  Future<void> onTapRowtime(BuildContext context) async {
-    var initialState = BlocProvider.of<CalendarBloc>(context).state;
-    TimeOfDay? time =
-        await showTimePicker(context: context, initialTime: TimeOfDay.now());
+  Future<void> onTapRowtime() async {
+    TimeOfDay? time = await showTimePicker(
+        context: Get.context!,
+        initialTime: controller.calendarModelObj.value.selectedTime!.value);
     if (time != null) {
-      initialState.calendarModelObj?.selectedTime = time;
-      var parseDate = DateFormat.jm().parse(time.format(context));
-      context
-          .read<CalendarBloc>()
-          .add(ChangeTimeEvent(time: parseDate.format(pattern: HH_mm)));
+      controller.calendarModelObj.value.selectedTime!.value = time;
+      var parseDate = DateFormat.jm().parse(time.format(Get.context!));
+      controller.calendarModelObj.value.time.value =
+          parseDate.format(pattern: HH_mm);
     }
   }
 
   /// Displays a time picker dialog and updates the selected time in the
-  /// current [calendarModelObj] object if the user selects a valid time.
+  /// [calendarModelObj] object of the current [controller] if the user
+  /// selects a valid time.
   ///
   /// This function returns a `Future` that completes with `void`.
-  Future<void> onTapRowclockthree(BuildContext context) async {
-    var initialState = BlocProvider.of<CalendarBloc>(context).state;
-    TimeOfDay? time =
-        await showTimePicker(context: context, initialTime: TimeOfDay.now());
+  Future<void> onTapRowclockthree() async {
+    TimeOfDay? time = await showTimePicker(
+        context: Get.context!,
+        initialTime: controller.calendarModelObj.value.selectedTime1!.value);
     if (time != null) {
-      initialState.calendarModelObj?.selectedTime1 = time;
-      var parseDate = DateFormat.jm().parse(time.format(context));
-      context
-          .read<CalendarBloc>()
-          .add(ChangeTimeEvent1(time: parseDate.format(pattern: HH_mm)));
+      controller.calendarModelObj.value.selectedTime1!.value = time;
+      var parseDate = DateFormat.jm().parse(time.format(Get.context!));
+      controller.calendarModelObj.value.time1.value =
+          parseDate.format(pattern: HH_mm);
     }
   }
 
   /// Navigates to the calendarOneScreen when the action is triggered.
-  onTapPayment(BuildContext context) {
-    NavigatorService.pushNamed(
+  onTapPayment() {
+    Get.toNamed(
       AppRoutes.calendarOneScreen,
     );
   }

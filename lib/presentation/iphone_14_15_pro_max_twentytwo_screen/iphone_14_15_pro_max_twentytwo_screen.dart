@@ -11,30 +11,18 @@ import '../../widgets/custom_text_form_field.dart';
 import '../iphone_14_15_pro_max_nine_tab_container_page/iphone_14_15_pro_max_nine_tab_container_page.dart';
 import '../iphone_14_15_pro_max_seven_page/iphone_14_15_pro_max_seven_page.dart';
 import '../iphone_14_15_pro_max_sixteen_page/iphone_14_15_pro_max_sixteen_page.dart';
-import 'bloc/iphone_14_15_pro_max_twentytwo_bloc.dart';
-import 'models/iphone_14_15_pro_max_twentytwo_model.dart'; // ignore_for_file: must_be_immutable
+import 'controller/iphone_14_15_pro_max_twentytwo_controller.dart'; // ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable
 
 // ignore_for_file: must_be_immutable
-class Iphone1415ProMaxTwentytwoScreen extends StatelessWidget {
+class Iphone1415ProMaxTwentytwoScreen
+    extends GetWidget<Iphone1415ProMaxTwentytwoController> {
   Iphone1415ProMaxTwentytwoScreen({Key? key})
       : super(
           key: key,
         );
 
-  GlobalKey<NavigatorState> navigatorKey = GlobalKey();
-
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  static Widget builder(BuildContext context) {
-    return BlocProvider<Iphone1415ProMaxTwentytwoBloc>(
-      create: (context) =>
-          Iphone1415ProMaxTwentytwoBloc(Iphone1415ProMaxTwentytwoState(
-        iphone1415ProMaxTwentytwoModelObj: Iphone1415ProMaxTwentytwoModel(),
-      ))
-            ..add(Iphone1415ProMaxTwentytwoInitialEvent()),
-      child: Iphone1415ProMaxTwentytwoScreen(),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,10 +31,14 @@ class Iphone1415ProMaxTwentytwoScreen extends StatelessWidget {
         extendBody: true,
         extendBodyBehindAppBar: true,
         resizeToAvoidBottomInset: false,
-        appBar: _buildAppBar(context),
+        appBar: _buildAppBar(),
         body: Container(
           width: SizeUtils.width,
           height: SizeUtils.height,
+          padding: EdgeInsets.only(
+            top: 52.v,
+            bottom: 79.v,
+          ),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment(0.86, 1.06),
@@ -102,45 +94,38 @@ class Iphone1415ProMaxTwentytwoScreen extends StatelessWidget {
                           CustomTextStyles.bodyLargeOnPrimaryContainer_6,
                     ),
                     SizedBox(height: 22.v),
-                    BlocSelector<Iphone1415ProMaxTwentytwoBloc,
-                        Iphone1415ProMaxTwentytwoState, TextEditingController?>(
-                      selector: (state) => state.emailController,
-                      builder: (context, emailController) {
-                        return CustomTextFormField(
-                          controller: emailController,
-                          hintText: "msg_sent_us_an_e_mail".tr,
-                          hintStyle:
-                              CustomTextStyles.bodyLargeOnPrimaryContainer_6,
-                          textInputAction: TextInputAction.done,
-                          textInputType: TextInputType.emailAddress,
-                          prefix: Container(
-                            margin: EdgeInsets.fromLTRB(22.h, 21.v, 10.h, 21.v),
-                            child: CustomImageView(
-                              imagePath: ImageConstant.imgLockPrimary,
-                              height: 21.v,
-                              width: 26.h,
-                            ),
-                          ),
-                          prefixConstraints: BoxConstraints(
-                            maxHeight: 63.v,
-                          ),
-                          validator: (value) {
-                            if (value == null ||
-                                (!isValidEmail(value, isRequired: true))) {
-                              return "err_msg_please_enter_valid_email".tr;
-                            }
-                            return null;
-                          },
-                          contentPadding: EdgeInsets.only(
-                            top: 21.v,
-                            right: 30.h,
-                            bottom: 21.v,
-                          ),
-                        );
+                    CustomTextFormField(
+                      controller: controller.emailController,
+                      hintText: "msg_sent_us_an_e_mail".tr,
+                      hintStyle: CustomTextStyles.bodyLargeOnPrimaryContainer_6,
+                      textInputAction: TextInputAction.done,
+                      textInputType: TextInputType.emailAddress,
+                      prefix: Container(
+                        margin: EdgeInsets.fromLTRB(22.h, 21.v, 10.h, 21.v),
+                        child: CustomImageView(
+                          imagePath: ImageConstant.imgLockPrimary,
+                          height: 21.v,
+                          width: 26.h,
+                        ),
+                      ),
+                      prefixConstraints: BoxConstraints(
+                        maxHeight: 63.v,
+                      ),
+                      validator: (value) {
+                        if (value == null ||
+                            (!isValidEmail(value, isRequired: true))) {
+                          return "err_msg_please_enter_valid_email".tr;
+                        }
+                        return null;
                       },
+                      contentPadding: EdgeInsets.only(
+                        top: 21.v,
+                        right: 30.h,
+                        bottom: 21.v,
+                      ),
                     ),
                     SizedBox(height: 22.v),
-                    _buildProfileFaqsRow(context),
+                    _buildProfileFaqsRow(),
                     SizedBox(height: 5.v)
                   ],
                 ),
@@ -148,13 +133,13 @@ class Iphone1415ProMaxTwentytwoScreen extends StatelessWidget {
             ),
           ),
         ),
-        bottomNavigationBar: _buildBottomBar(context),
+        bottomNavigationBar: _buildBottomBar(),
       ),
     );
   }
 
   /// Section Widget
-  PreferredSizeWidget _buildAppBar(BuildContext context) {
+  PreferredSizeWidget _buildAppBar() {
     return CustomAppBar(
       height: 52.v,
       leadingWidth: 55.h,
@@ -174,7 +159,7 @@ class Iphone1415ProMaxTwentytwoScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildProfileFaqsRow(BuildContext context) {
+  Widget _buildProfileFaqsRow() {
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: 21.h,
@@ -207,11 +192,10 @@ class Iphone1415ProMaxTwentytwoScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildBottomBar(BuildContext context) {
+  Widget _buildBottomBar() {
     return CustomBottomBar(
       onChanged: (BottomBarEnum type) {
-        Navigator.pushNamed(
-            navigatorKey.currentContext!, getCurrentRoute(type));
+        Get.toNamed(getCurrentRoute(type), id: 1);
       },
     );
   }
@@ -235,17 +219,14 @@ class Iphone1415ProMaxTwentytwoScreen extends StatelessWidget {
   }
 
   ///Handling page based on route
-  Widget getCurrentPage(
-    BuildContext context,
-    String currentRoute,
-  ) {
+  Widget getCurrentPage(String currentRoute) {
     switch (currentRoute) {
       case AppRoutes.iphone1415ProMaxSevenPage:
-        return Iphone1415ProMaxSevenPage.builder(context);
+        return Iphone1415ProMaxSevenPage();
       case AppRoutes.iphone1415ProMaxNineTabContainerPage:
-        return Iphone1415ProMaxNineTabContainerPage.builder(context);
+        return Iphone1415ProMaxNineTabContainerPage();
       case AppRoutes.iphone1415ProMaxSixteenPage:
-        return Iphone1415ProMaxSixteenPage.builder(context);
+        return Iphone1415ProMaxSixteenPage();
       default:
         return DefaultWidget();
     }

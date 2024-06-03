@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/app_export.dart';
+import '../controller/iphone_14_15_pro_max_seven_controller.dart';
 import '../models/userprofilelist_item_model.dart'; // ignore: must_be_immutable
 // ignore_for_file: must_be_immutable
 
@@ -12,18 +13,22 @@ class UserprofilelistItemWidget extends StatelessWidget {
 
   UserprofilelistItemModel userprofilelistItemModelObj;
 
+  var controller = Get.find<Iphone1415ProMaxSevenController>();
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: 233.h,
       child: Column(
         children: [
-          CustomImageView(
-            imagePath: userprofilelistItemModelObj.userImage!,
-            height: 113.v,
-            width: 233.h,
-            radius: BorderRadius.vertical(
-              top: Radius.circular(10.h),
+          Obx(
+            () => CustomImageView(
+              imagePath: userprofilelistItemModelObj.userImage!.value,
+              height: 113.v,
+              width: 233.h,
+              radius: BorderRadius.vertical(
+                top: Radius.circular(10.h),
+              ),
             ),
           ),
           Container(
@@ -39,9 +44,11 @@ class UserprofilelistItemWidget extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  userprofilelistItemModelObj.sportName!,
-                  style: CustomTextStyles.titleMediumBlack90019,
+                Obx(
+                  () => Text(
+                    userprofilelistItemModelObj.sportName!.value,
+                    style: CustomTextStyles.titleMediumBlack90019,
+                  ),
                 ),
                 SizedBox(height: 7.v),
                 RichText(

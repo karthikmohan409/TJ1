@@ -3,35 +3,19 @@ import 'package:easy_date_timeline/easy_date_timeline.dart';
 import '../../core/app_export.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_outlined_button.dart';
-import 'bloc/iphone_14_15_pro_max_fifteen_bloc.dart';
+import 'controller/iphone_14_15_pro_max_fifteen_controller.dart';
 import 'models/iphone_14_15_pro_max_fifteen_model.dart'; // ignore_for_file: must_be_immutable
 
-class Iphone1415ProMaxFifteenPage extends StatefulWidget {
-  const Iphone1415ProMaxFifteenPage({Key? key})
+// ignore_for_file: must_be_immutable
+class Iphone1415ProMaxFifteenPage extends StatelessWidget {
+  Iphone1415ProMaxFifteenPage({Key? key})
       : super(
           key: key,
         );
 
-  @override
-  Iphone1415ProMaxFifteenPageState createState() =>
-      Iphone1415ProMaxFifteenPageState();
-  static Widget builder(BuildContext context) {
-    return BlocProvider<Iphone1415ProMaxFifteenBloc>(
-      create: (context) =>
-          Iphone1415ProMaxFifteenBloc(Iphone1415ProMaxFifteenState(
-        iphone1415ProMaxFifteenModelObj: Iphone1415ProMaxFifteenModel(),
-      ))
-            ..add(Iphone1415ProMaxFifteenInitialEvent()),
-      child: Iphone1415ProMaxFifteenPage(),
-    );
-  }
-}
+  Iphone1415ProMaxFifteenController controller = Get.put(
+      Iphone1415ProMaxFifteenController(Iphone1415ProMaxFifteenModel().obs));
 
-class Iphone1415ProMaxFifteenPageState
-    extends State<Iphone1415ProMaxFifteenPage>
-    with AutomaticKeepAliveClientMixin<Iphone1415ProMaxFifteenPage> {
-  @override
-  bool get wantKeepAlive => true;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -63,9 +47,9 @@ class Iphone1415ProMaxFifteenPageState
                       endIndent: 15.h,
                     ),
                     SizedBox(height: 14.v),
-                    _buildDateAndCourts(context),
+                    _buildDateAndCourts(),
                     SizedBox(height: 19.v),
-                    _buildCalendarSection(context),
+                    _buildCalendarSection(),
                     SizedBox(height: 27.v),
                     Divider(
                       color:
@@ -74,37 +58,37 @@ class Iphone1415ProMaxFifteenPageState
                       endIndent: 15.h,
                     ),
                     SizedBox(height: 13.v),
-                    _buildAvailableHours(context),
+                    _buildAvailableHours(),
                     SizedBox(height: 25.v),
-                    _buildTimeSlot(context),
+                    _buildTimeSlot(),
                     SizedBox(height: 13.v),
                     Divider(
                       color:
                           theme.colorScheme.onPrimaryContainer.withOpacity(0.1),
                     ),
                     SizedBox(height: 14.v),
-                    _buildTimeSlot1(context),
+                    _buildTimeSlot1(),
                     SizedBox(height: 12.v),
                     Divider(
                       color:
                           theme.colorScheme.onPrimaryContainer.withOpacity(0.1),
                     ),
                     SizedBox(height: 15.v),
-                    _buildTimeSlot2(context),
+                    _buildTimeSlot2(),
                     SizedBox(height: 11.v),
                     Divider(
                       color:
                           theme.colorScheme.onPrimaryContainer.withOpacity(0.1),
                     ),
                     SizedBox(height: 15.v),
-                    _buildTimeSlot3(context),
+                    _buildTimeSlot3(),
                     SizedBox(height: 14.v),
                     Divider(
                       color:
                           theme.colorScheme.onPrimaryContainer.withOpacity(0.1),
                     ),
                     SizedBox(height: 15.v),
-                    _buildTimeSlot4(context),
+                    _buildTimeSlot4(),
                     SizedBox(height: 13.v),
                     Divider(
                       color:
@@ -121,7 +105,7 @@ class Iphone1415ProMaxFifteenPageState
   }
 
   /// Section Widget
-  Widget _buildDateAndCourts(BuildContext context) {
+  Widget _buildDateAndCourts() {
     return Padding(
       padding: EdgeInsets.only(
         left: 21.h,
@@ -139,7 +123,7 @@ class Iphone1415ProMaxFifteenPageState
           ),
           GestureDetector(
             onTap: () {
-              onTapRowf7sportscour(context);
+              onTapRowf7sportscour();
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -168,59 +152,56 @@ class Iphone1415ProMaxFifteenPageState
   }
 
   /// Section Widget
-  Widget _buildCalendarSection(BuildContext context) {
-    return BlocBuilder<Iphone1415ProMaxFifteenBloc,
-        Iphone1415ProMaxFifteenState>(
-      builder: (context, state) {
-        return SizedBox(
-          height: 75.v,
-          width: 392.h,
-          child: EasyDateTimeLine(
-            initialDate: state.selectedDatesFromCalendar ?? DateTime.now(),
-            locale: 'en_US',
-            headerProps: EasyHeaderProps(
-              selectedDateFormat: SelectedDateFormat.fullDateDMY,
-              monthPickerType: MonthPickerType.switcher,
-              showHeader: false,
-            ),
-            dayProps: EasyDayProps(
-              width: 11.h,
-              height: 11.v,
-            ),
-            onDateChange: (selectedDate) {
-              state.selectedDatesFromCalendar = selectedDate;
-            },
-            itemBuilder:
-                (context, dayNumber, dayName, monthName, fullDate, isSelected) {
-              return isSelected
-                  ? Container(
-                      height: 11.adaptSize,
-                      width: 11.adaptSize,
-                      decoration: BoxDecoration(
-                        color: appTheme.orange700,
-                        borderRadius: BorderRadius.circular(
-                          5.h,
-                        ),
-                      ))
-                  : Container(
-                      height: 11.adaptSize,
-                      width: 11.adaptSize,
-                      decoration: BoxDecoration(
-                        color: appTheme.lightGreenA700,
-                        borderRadius: BorderRadius.circular(
-                          5.h,
-                        ),
-                      ),
-                    );
-            },
+  Widget _buildCalendarSection() {
+    return Obx(
+      () => SizedBox(
+        height: 75.v,
+        width: 392.h,
+        child: EasyDateTimeLine(
+          initialDate: controller.selectedDatesFromCalendar.value,
+          locale: 'en_US',
+          headerProps: EasyHeaderProps(
+            selectedDateFormat: SelectedDateFormat.fullDateDMY,
+            monthPickerType: MonthPickerType.switcher,
+            showHeader: false,
           ),
-        );
-      },
+          dayProps: EasyDayProps(
+            width: 11.h,
+            height: 11.v,
+          ),
+          onDateChange: (selectedDate) {
+            controller.selectedDatesFromCalendar.value = selectedDate;
+          },
+          itemBuilder:
+              (context, dayNumber, dayName, monthName, fullDate, isSelected) {
+            return isSelected
+                ? Container(
+                    height: 11.adaptSize,
+                    width: 11.adaptSize,
+                    decoration: BoxDecoration(
+                      color: appTheme.orange700,
+                      borderRadius: BorderRadius.circular(
+                        5.h,
+                      ),
+                    ))
+                : Container(
+                    height: 11.adaptSize,
+                    width: 11.adaptSize,
+                    decoration: BoxDecoration(
+                      color: appTheme.lightGreenA700,
+                      borderRadius: BorderRadius.circular(
+                        5.h,
+                      ),
+                    ),
+                  );
+          },
+        ),
+      ),
     );
   }
 
   /// Section Widget
-  Widget _buildHr(BuildContext context) {
+  Widget _buildHr() {
     return CustomElevatedButton(
       height: 35.v,
       width: 69.h,
@@ -231,7 +212,7 @@ class Iphone1415ProMaxFifteenPageState
   }
 
   /// Section Widget
-  Widget _buildAvailableHours(BuildContext context) {
+  Widget _buildAvailableHours() {
     return Padding(
       padding: EdgeInsets.only(
         left: 21.h,
@@ -250,7 +231,7 @@ class Iphone1415ProMaxFifteenPageState
               style: CustomTextStyles.titleLargeOnPrimaryContainer_1,
             ),
           ),
-          _buildHr(context),
+          _buildHr(),
           Spacer(),
           Padding(
             padding: EdgeInsets.only(
@@ -268,19 +249,19 @@ class Iphone1415ProMaxFifteenPageState
   }
 
   /// Section Widget
-  Widget _buildBookNowButton(BuildContext context) {
+  Widget _buildBookNowButton() {
     return CustomOutlinedButton(
       width: 127.h,
       text: "lbl_book_now".tr,
       margin: EdgeInsets.only(top: 4.v),
       onPressed: () {
-        onTapBookNowButton(context);
+        onTapBookNowButton();
       },
     );
   }
 
   /// Section Widget
-  Widget _buildTimeSlot(BuildContext context) {
+  Widget _buildTimeSlot() {
     return Padding(
       padding: EdgeInsets.only(
         left: 21.h,
@@ -303,26 +284,26 @@ class Iphone1415ProMaxFifteenPageState
               )
             ],
           ),
-          _buildBookNowButton(context)
+          _buildBookNowButton()
         ],
       ),
     );
   }
 
   /// Section Widget
-  Widget _buildBookNowButton1(BuildContext context) {
+  Widget _buildBookNowButton1() {
     return CustomOutlinedButton(
       width: 127.h,
       text: "lbl_book_now".tr,
       margin: EdgeInsets.symmetric(vertical: 2.v),
       onPressed: () {
-        onTapBookNowButton1(context);
+        onTapBookNowButton1();
       },
     );
   }
 
   /// Section Widget
-  Widget _buildTimeSlot1(BuildContext context) {
+  Widget _buildTimeSlot1() {
     return Padding(
       padding: EdgeInsets.only(
         left: 21.h,
@@ -345,14 +326,14 @@ class Iphone1415ProMaxFifteenPageState
               )
             ],
           ),
-          _buildBookNowButton1(context)
+          _buildBookNowButton1()
         ],
       ),
     );
   }
 
   /// Section Widget
-  Widget _buildBookNowButton2(BuildContext context) {
+  Widget _buildBookNowButton2() {
     return CustomOutlinedButton(
       width: 127.h,
       text: "lbl_book_now".tr,
@@ -361,7 +342,7 @@ class Iphone1415ProMaxFifteenPageState
   }
 
   /// Section Widget
-  Widget _buildTimeSlot2(BuildContext context) {
+  Widget _buildTimeSlot2() {
     return Padding(
       padding: EdgeInsets.only(
         left: 21.h,
@@ -371,18 +352,17 @@ class Iphone1415ProMaxFifteenPageState
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _buildCourtsAvailability(
-            context,
             time: "lbl_12_pm_2_pm".tr,
             courtsAvailable: "msg_7_courts_available".tr,
           ),
-          _buildBookNowButton2(context)
+          _buildBookNowButton2()
         ],
       ),
     );
   }
 
   /// Section Widget
-  Widget _buildBookNowButton3(BuildContext context) {
+  Widget _buildBookNowButton3() {
     return CustomOutlinedButton(
       width: 127.h,
       text: "lbl_book_now".tr,
@@ -391,7 +371,7 @@ class Iphone1415ProMaxFifteenPageState
   }
 
   /// Section Widget
-  Widget _buildTimeSlot3(BuildContext context) {
+  Widget _buildTimeSlot3() {
     return Padding(
       padding: EdgeInsets.only(
         left: 21.h,
@@ -401,18 +381,17 @@ class Iphone1415ProMaxFifteenPageState
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _buildCourtsAvailability(
-            context,
             time: "lbl_4_pm_6_pm".tr,
             courtsAvailable: "msg_7_courts_available".tr,
           ),
-          _buildBookNowButton3(context)
+          _buildBookNowButton3()
         ],
       ),
     );
   }
 
   /// Section Widget
-  Widget _buildBookNowButton4(BuildContext context) {
+  Widget _buildBookNowButton4() {
     return CustomOutlinedButton(
       width: 127.h,
       text: "lbl_book_now".tr,
@@ -421,7 +400,7 @@ class Iphone1415ProMaxFifteenPageState
   }
 
   /// Section Widget
-  Widget _buildTimeSlot4(BuildContext context) {
+  Widget _buildTimeSlot4() {
     return Padding(
       padding: EdgeInsets.only(
         left: 21.h,
@@ -444,15 +423,14 @@ class Iphone1415ProMaxFifteenPageState
               )
             ],
           ),
-          _buildBookNowButton4(context)
+          _buildBookNowButton4()
         ],
       ),
     );
   }
 
   /// Common widget
-  Widget _buildCourtsAvailability(
-    BuildContext context, {
+  Widget _buildCourtsAvailability({
     required String time,
     required String courtsAvailable,
   }) {
@@ -477,22 +455,22 @@ class Iphone1415ProMaxFifteenPageState
   }
 
   /// Navigates to the calendarFourScreen when the action is triggered.
-  onTapRowf7sportscour(BuildContext context) {
-    NavigatorService.pushNamed(
+  onTapRowf7sportscour() {
+    Get.toNamed(
       AppRoutes.calendarFourScreen,
     );
   }
 
   /// Navigates to the calendarScreen when the action is triggered.
-  onTapBookNowButton(BuildContext context) {
-    NavigatorService.pushNamed(
+  onTapBookNowButton() {
+    Get.toNamed(
       AppRoutes.calendarScreen,
     );
   }
 
   /// Navigates to the calendarScreen when the action is triggered.
-  onTapBookNowButton1(BuildContext context) {
-    NavigatorService.pushNamed(
+  onTapBookNowButton1() {
+    Get.toNamed(
       AppRoutes.calendarScreen,
     );
   }

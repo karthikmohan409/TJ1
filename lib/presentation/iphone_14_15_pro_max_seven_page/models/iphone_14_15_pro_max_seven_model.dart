@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import '../../../core/app_export.dart';
 import 'userprofilelist_item_model.dart';
 import 'viewhierarchylist_item_model.dart';
@@ -8,28 +7,23 @@ import 'viewhierarchylist_item_model.dart';
 // ignore_for_file: must_be_immutable
 
 // ignore_for_file: must_be_immutable
-class Iphone1415ProMaxSevenModel extends Equatable {
-  Iphone1415ProMaxSevenModel(
-      {this.userprofilelistItemList = const [],
-      this.viewhierarchylistItemList = const []});
+class Iphone1415ProMaxSevenModel {
+  Rx<List<UserprofilelistItemModel>> userprofilelistItemList = Rx([
+    UserprofilelistItemModel(
+        userImage: ImageConstant.imgRectangle9.obs, sportName: "Badminton".obs),
+    UserprofilelistItemModel(
+        userImage: ImageConstant.imgRectangle9113x233.obs,
+        sportName: "Table tennis".obs)
+  ]);
 
-  List<UserprofilelistItemModel> userprofilelistItemList;
-
-  List<ViewhierarchylistItemModel> viewhierarchylistItemList;
-
-  Iphone1415ProMaxSevenModel copyWith({
-    List<UserprofilelistItemModel>? userprofilelistItemList,
-    List<ViewhierarchylistItemModel>? viewhierarchylistItemList,
-  }) {
-    return Iphone1415ProMaxSevenModel(
-      userprofilelistItemList:
-          userprofilelistItemList ?? this.userprofilelistItemList,
-      viewhierarchylistItemList:
-          viewhierarchylistItemList ?? this.viewhierarchylistItemList,
-    );
-  }
-
-  @override
-  List<Object?> get props =>
-      [userprofilelistItemList, viewhierarchylistItemList];
+  Rx<List<ViewhierarchylistItemModel>> viewhierarchylistItemList = Rx([
+    ViewhierarchylistItemModel(
+        image1: ImageConstant.imgRectangle10.obs,
+        image2: ImageConstant.imgRectangle9188x233.obs,
+        text1: "Badminton".obs),
+    ViewhierarchylistItemModel(
+        image1: ImageConstant.imgRectangle1075x233.obs,
+        image2: ImageConstant.imgRectangle91.obs,
+        text1: "Badminton + Taekwondo".obs)
+  ]);
 }

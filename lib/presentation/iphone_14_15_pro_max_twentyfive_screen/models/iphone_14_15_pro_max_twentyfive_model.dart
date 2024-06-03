@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import '../../../core/app_export.dart';
 import 'pricinglist_item_model.dart';
 
@@ -7,18 +6,19 @@ import 'pricinglist_item_model.dart';
 // ignore_for_file: must_be_immutable
 
 // ignore_for_file: must_be_immutable
-class Iphone1415ProMaxTwentyfiveModel extends Equatable {
-  Iphone1415ProMaxTwentyfiveModel({this.pricinglistItemList = const []});
-
-  List<PricinglistItemModel> pricinglistItemList;
-
-  Iphone1415ProMaxTwentyfiveModel copyWith(
-      {List<PricinglistItemModel>? pricinglistItemList}) {
-    return Iphone1415ProMaxTwentyfiveModel(
-      pricinglistItemList: pricinglistItemList ?? this.pricinglistItemList,
-    );
-  }
-
-  @override
-  List<Object?> get props => [pricinglistItemList];
+class Iphone1415ProMaxTwentyfiveModel {
+  Rx<List<PricinglistItemModel>> pricinglistItemList = Rx([
+    PricinglistItemModel(
+        monthlyPriceTex: "2 Days in a week (Monthly price)".obs,
+        priceAmountText: "\$360".obs,
+        hstWeekText: "+HST Week".obs),
+    PricinglistItemModel(
+        monthlyPriceTex: "3 Days in a week (Monthly Price)".obs,
+        priceAmountText: "\$450".obs,
+        hstWeekText: "+HST Week".obs),
+    PricinglistItemModel(
+        monthlyPriceTex: "Full week (Monthly Price)".obs,
+        priceAmountText: "\$590".obs,
+        hstWeekText: "+HST Week".obs)
+  ]);
 }

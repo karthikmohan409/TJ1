@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart' as fs;
 import '../../../core/app_export.dart';
+import '../controller/iphone_14_15_pro_max_seventeen_controller.dart';
 import '../models/bookingdetails_item_model.dart'; // ignore: must_be_immutable
 // ignore_for_file: must_be_immutable
 
@@ -12,6 +13,8 @@ class BookingdetailsItemWidget extends StatelessWidget {
         );
 
   BookingdetailsItemModel bookingdetailsItemModelObj;
+
+  var controller = Get.find<Iphone1415ProMaxSeventeenController>();
 
   @override
   Widget build(BuildContext context) {
@@ -40,15 +43,19 @@ class BookingdetailsItemWidget extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.only(left: 13.h),
-                child: Text(
-                  bookingdetailsItemModelObj.tableName!,
-                  style: theme.textTheme.bodyLarge,
+                child: Obx(
+                  () => Text(
+                    bookingdetailsItemModelObj.tableName!.value,
+                    style: theme.textTheme.bodyLarge,
+                  ),
                 ),
               ),
               Spacer(),
-              Text(
-                bookingdetailsItemModelObj.tablePrice!,
-                style: CustomTextStyles.titleMediumBluegray800,
+              Obx(
+                () => Text(
+                  bookingdetailsItemModelObj.tablePrice!.value,
+                  style: CustomTextStyles.titleMediumBluegray800,
+                ),
               )
             ],
           ),
@@ -64,15 +71,19 @@ class BookingdetailsItemWidget extends StatelessWidget {
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 11.h),
-                  child: Text(
-                    bookingdetailsItemModelObj.timeSlot!,
-                    style: theme.textTheme.bodyLarge,
+                  child: Obx(
+                    () => Text(
+                      bookingdetailsItemModelObj.timeSlot!.value,
+                      style: theme.textTheme.bodyLarge,
+                    ),
                   ),
                 ),
                 Spacer(),
-                Text(
-                  bookingdetailsItemModelObj.duration!,
-                  style: theme.textTheme.bodyLarge,
+                Obx(
+                  () => Text(
+                    bookingdetailsItemModelObj.duration!.value,
+                    style: theme.textTheme.bodyLarge,
+                  ),
                 )
               ],
             ),
@@ -88,9 +99,11 @@ class BookingdetailsItemWidget extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.only(left: 12.h),
-                child: Text(
-                  bookingdetailsItemModelObj.date!,
-                  style: theme.textTheme.bodyLarge,
+                child: Obx(
+                  () => Text(
+                    bookingdetailsItemModelObj.date!.value,
+                    style: theme.textTheme.bodyLarge,
+                  ),
                 ),
               )
             ],

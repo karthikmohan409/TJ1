@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../core/app_export.dart';
 import '../../../theme/custom_button_style.dart';
 import '../../../widgets/custom_elevated_button.dart';
+import '../controller/iphone_14_15_pro_max_twentyfour_controller.dart';
 import '../models/programssection_item_model.dart'; // ignore: must_be_immutable
 // ignore_for_file: must_be_immutable
 
@@ -13,6 +14,8 @@ class ProgramssectionItemWidget extends StatelessWidget {
         );
 
   ProgramssectionItemModel programssectionItemModelObj;
+
+  var controller = Get.find<Iphone1415ProMaxTwentyfourController>();
 
   @override
   Widget build(BuildContext context) {

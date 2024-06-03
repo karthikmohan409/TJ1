@@ -4,72 +4,51 @@ import '../../widgets/custom_bottom_bar.dart';
 import '../iphone_14_15_pro_max_nine_tab_container_page/iphone_14_15_pro_max_nine_tab_container_page.dart';
 import '../iphone_14_15_pro_max_seven_page/iphone_14_15_pro_max_seven_page.dart';
 import '../iphone_14_15_pro_max_sixteen_page/iphone_14_15_pro_max_sixteen_page.dart';
-import 'bloc/iphone_14_15_pro_max_seven_container_bloc.dart';
-import 'models/iphone_14_15_pro_max_seven_container_model.dart'; // ignore_for_file: must_be_immutable
+import 'controller/iphone_14_15_pro_max_seven_container_controller.dart'; // ignore_for_file: must_be_immutable
 
-// ignore_for_file: must_be_immutable
-class Iphone1415ProMaxSevenContainerScreen extends StatelessWidget {
-  Iphone1415ProMaxSevenContainerScreen({Key? key})
+class Iphone1415ProMaxSevenContainerScreen
+    extends GetWidget<Iphone1415ProMaxSevenContainerController> {
+  const Iphone1415ProMaxSevenContainerScreen({Key? key})
       : super(
           key: key,
         );
 
-  GlobalKey<NavigatorState> navigatorKey = GlobalKey();
-
-  static Widget builder(BuildContext context) {
-    return BlocProvider<Iphone1415ProMaxSevenContainerBloc>(
-      create: (context) => Iphone1415ProMaxSevenContainerBloc(
-          Iphone1415ProMaxSevenContainerState(
-        iphone1415ProMaxSevenContainerModelObj:
-            Iphone1415ProMaxSevenContainerModel(),
-      ))
-        ..add(Iphone1415ProMaxSevenContainerInitialEvent()),
-      child: Iphone1415ProMaxSevenContainerScreen(),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Iphone1415ProMaxSevenContainerBloc,
-        Iphone1415ProMaxSevenContainerState>(
-      builder: (context, state) {
-        return SafeArea(
-          child: Scaffold(
-            extendBody: true,
-            extendBodyBehindAppBar: true,
-            body: Container(
-              width: SizeUtils.width,
-              height: SizeUtils.height,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment(0.86, 1.06),
-                  end: Alignment(0.3, 0.17),
-                  colors: [appTheme.deepPurple800, appTheme.indigo900],
-                ),
-              ),
-              child: Navigator(
-                key: navigatorKey,
-                initialRoute: AppRoutes.iphone1415ProMaxSevenPage,
-                onGenerateRoute: (routeSetting) => PageRouteBuilder(
-                  pageBuilder: (ctx, ani, ani1) =>
-                      getCurrentPage(context, routeSetting.name!),
-                  transitionDuration: Duration(seconds: 0),
-                ),
-              ),
+    return SafeArea(
+      child: Scaffold(
+        extendBody: true,
+        extendBodyBehindAppBar: true,
+        body: Container(
+          width: SizeUtils.width,
+          height: SizeUtils.height,
+          padding: EdgeInsets.only(bottom: 79.v),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment(0.86, 1.06),
+              end: Alignment(0.3, 0.17),
+              colors: [appTheme.deepPurple800, appTheme.indigo900],
             ),
-            bottomNavigationBar: _buildBottomBar(context),
           ),
-        );
-      },
+          child: Navigator(
+            key: Get.nestedKey(1),
+            initialRoute: AppRoutes.iphone1415ProMaxSevenPage,
+            onGenerateRoute: (routeSetting) => GetPageRoute(
+              page: () => getCurrentPage(routeSetting.name!),
+              transition: Transition.noTransition,
+            ),
+          ),
+        ),
+        bottomNavigationBar: _buildBottomBar(),
+      ),
     );
   }
 
   /// Section Widget
-  Widget _buildBottomBar(BuildContext context) {
+  Widget _buildBottomBar() {
     return CustomBottomBar(
       onChanged: (BottomBarEnum type) {
-        Navigator.pushNamed(
-            navigatorKey.currentContext!, getCurrentRoute(type));
+        Get.toNamed(getCurrentRoute(type), id: 1);
       },
     );
   }
@@ -93,17 +72,14 @@ class Iphone1415ProMaxSevenContainerScreen extends StatelessWidget {
   }
 
   ///Handling page based on route
-  Widget getCurrentPage(
-    BuildContext context,
-    String currentRoute,
-  ) {
+  Widget getCurrentPage(String currentRoute) {
     switch (currentRoute) {
       case AppRoutes.iphone1415ProMaxSevenPage:
-        return Iphone1415ProMaxSevenPage.builder(context);
+        return Iphone1415ProMaxSevenPage();
       case AppRoutes.iphone1415ProMaxNineTabContainerPage:
-        return Iphone1415ProMaxNineTabContainerPage.builder(context);
+        return Iphone1415ProMaxNineTabContainerPage();
       case AppRoutes.iphone1415ProMaxSixteenPage:
-        return Iphone1415ProMaxSixteenPage.builder(context);
+        return Iphone1415ProMaxSixteenPage();
       default:
         return DefaultWidget();
     }

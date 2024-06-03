@@ -1,215 +1,173 @@
 import 'package:flutter/material.dart';
 import '../../core/app_export.dart';
-import 'bloc/app_navigation_bloc.dart';
-import 'models/app_navigation_model.dart';
+import 'controller/app_navigation_controller.dart'; // ignore_for_file: must_be_immutable
 
-class AppNavigationScreen extends StatelessWidget {
+class AppNavigationScreen extends GetWidget<AppNavigationController> {
   const AppNavigationScreen({Key? key})
       : super(
           key: key,
         );
 
-  static Widget builder(BuildContext context) {
-    return BlocProvider<AppNavigationBloc>(
-      create: (context) => AppNavigationBloc(AppNavigationState(
-        appNavigationModelObj: AppNavigationModel(),
-      ))
-        ..add(AppNavigationInitialEvent()),
-      child: AppNavigationScreen(),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AppNavigationBloc, AppNavigationState>(
-      builder: (context, state) {
-        return SafeArea(
-          child: Scaffold(
-            backgroundColor:
-                theme.colorScheme.onPrimaryContainer.withOpacity(1),
-            body: SizedBox(
-              width: 375.h,
-              child: Column(
-                children: [
-                  _buildAppNavigation(context),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Container(
-                        decoration: AppDecoration.fillOnPrimaryContainer,
-                        child: Column(
-                          children: [
-                            _buildScreenTitle(
-                              context,
-                              screenTitle: "msg_iphone_14_15_pro".tr,
-                              onTapScreenTitle: () => onTapScreenTitle(
-                                  AppRoutes.iphone1415ProMaxTwentysixScreen),
-                            ),
-                            _buildScreenTitle(
-                              context,
-                              screenTitle: "msg_iphone_14_15_pro2".tr,
-                              onTapScreenTitle: () => onTapScreenTitle(
-                                  AppRoutes.iphone1415ProMaxTwentythreeScreen),
-                            ),
-                            _buildScreenTitle(
-                              context,
-                              screenTitle: "msg_iphone_14_15_pro3".tr,
-                              onTapScreenTitle: () => onTapScreenTitle(
-                                  AppRoutes.iphone1415ProMaxEighteenScreen),
-                            ),
-                            _buildScreenTitle(
-                              context,
-                              screenTitle: "msg_iphone_14_15_pro4".tr,
-                              onTapScreenTitle: () => onTapScreenTitle(
-                                  AppRoutes.iphone1415ProMaxNineteenScreen),
-                            ),
-                            _buildScreenTitle(
-                              context,
-                              screenTitle: "msg_iphone_14_15_pro5".tr,
-                              onTapScreenTitle: () => onTapScreenTitle(
-                                  AppRoutes.iphone1415ProMaxTwentyScreen),
-                            ),
-                            _buildScreenTitle(
-                              context,
-                              screenTitle: "msg_iphone_14_15_pro6".tr,
-                              onTapScreenTitle: () => onTapScreenTitle(
-                                  AppRoutes.iphone1415ProMaxTwentyoneScreen),
-                            ),
-                            _buildScreenTitle(
-                              context,
-                              screenTitle: "msg_iphone_14_15_pro7".tr,
-                              onTapScreenTitle: () => onTapScreenTitle(
-                                  AppRoutes.iphone1415ProMaxTwentytwoScreen),
-                            ),
-                            _buildScreenTitle(
-                              context,
-                              screenTitle: "msg_iphone_14_15_pro8".tr,
-                              onTapScreenTitle: () => onTapScreenTitle(
-                                  AppRoutes.iphone1415ProMaxEightScreen),
-                            ),
-                            _buildScreenTitle(
-                              context,
-                              screenTitle: "msg_iphone_14_15_pro9".tr,
-                              onTapScreenTitle: () => onTapScreenTitle(
-                                  AppRoutes.iphone1415ProMaxOneScreen),
-                            ),
-                            _buildScreenTitle(
-                              context,
-                              screenTitle: "msg_iphone_14_15_pro10".tr,
-                              onTapScreenTitle: () => onTapScreenTitle(
-                                  AppRoutes.iphone1415ProMaxTwoScreen),
-                            ),
-                            _buildScreenTitle(
-                              context,
-                              screenTitle: "msg_iphone_14_15_pro11".tr,
-                              onTapScreenTitle: () => onTapScreenTitle(
-                                  AppRoutes.iphone1415ProMaxThreeScreen),
-                            ),
-                            _buildScreenTitle(
-                              context,
-                              screenTitle: "msg_iphone_14_15_pro12".tr,
-                              onTapScreenTitle: () => onTapScreenTitle(
-                                  AppRoutes.iphone1415ProMaxFourScreen),
-                            ),
-                            _buildScreenTitle(
-                              context,
-                              screenTitle: "msg_iphone_14_15_pro13".tr,
-                              onTapScreenTitle: () => onTapScreenTitle(
-                                  AppRoutes.iphone1415ProMaxFiveScreen),
-                            ),
-                            _buildScreenTitle(
-                              context,
-                              screenTitle: "msg_iphone_14_15_pro14".tr,
-                              onTapScreenTitle: () => onTapScreenTitle(
-                                  AppRoutes.iphone1415ProMaxSixScreen),
-                            ),
-                            _buildScreenTitle(
-                              context,
-                              screenTitle: "msg_iphone_14_15_pro15".tr,
-                              onTapScreenTitle: () => onTapScreenTitle(AppRoutes
-                                  .iphone1415ProMaxSevenContainerScreen),
-                            ),
-                            _buildScreenTitle(
-                              context,
-                              screenTitle: "lbl_calendar".tr,
-                              onTapScreenTitle: () =>
-                                  onTapScreenTitle(AppRoutes.calendarScreen),
-                            ),
-                            _buildScreenTitle(
-                              context,
-                              screenTitle: "lbl_calendar_one".tr,
-                              onTapScreenTitle: () =>
-                                  onTapScreenTitle(AppRoutes.calendarOneScreen),
-                            ),
-                            _buildScreenTitle(
-                              context,
-                              screenTitle: "lbl_calendar_two".tr,
-                              onTapScreenTitle: () =>
-                                  onTapScreenTitle(AppRoutes.calendarTwoScreen),
-                            ),
-                            _buildScreenTitle(
-                              context,
-                              screenTitle: "lbl_calendar_three".tr,
-                              onTapScreenTitle: () => onTapScreenTitle(
-                                  AppRoutes.calendarThreeScreen),
-                            ),
-                            _buildScreenTitle(
-                              context,
-                              screenTitle: "lbl_calendar_four".tr,
-                              onTapScreenTitle: () => onTapScreenTitle(
-                                  AppRoutes.calendarFourScreen),
-                            ),
-                            _buildScreenTitle(
-                              context,
-                              screenTitle: "msg_iphone_14_15_pro16".tr,
-                              onTapScreenTitle: () => onTapScreenTitle(
-                                  AppRoutes.iphone1415ProMaxSeventeenScreen),
-                            ),
-                            _buildScreenTitle(
-                              context,
-                              screenTitle: "msg_iphone_14_15_pro17".tr,
-                              onTapScreenTitle: () => onTapScreenTitle(
-                                  AppRoutes.iphone1415ProMaxTwentyfiveScreen),
-                            ),
-                            _buildScreenTitle(
-                              context,
-                              screenTitle: "msg_iphone_14_15_pro18".tr,
-                              onTapScreenTitle: () => onTapScreenTitle(
-                                  AppRoutes.iphone1415ProMaxTwentyfourScreen),
-                            ),
-                            _buildScreenTitle(
-                              context,
-                              screenTitle: "msg_iphone_14_15_pro19".tr,
-                              onTapScreenTitle: () => onTapScreenTitle(
-                                  AppRoutes.iphone1415ProMaxTwentysevenScreen),
-                            ),
-                            _buildScreenTitle(
-                              context,
-                              screenTitle: "msg_iphone_14_15_pro20".tr,
-                              onTapScreenTitle: () => onTapScreenTitle(
-                                  AppRoutes.iphone1415ProMaxTwentyeightScreen),
-                            ),
-                            _buildScreenTitle(
-                              context,
-                              screenTitle: "lbl_calendar_five".tr,
-                              onTapScreenTitle: () => onTapScreenTitle(
-                                  AppRoutes.calendarFiveScreen),
-                            )
-                          ],
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: theme.colorScheme.onPrimaryContainer.withOpacity(1),
+        body: SizedBox(
+          width: 375.h,
+          child: Column(
+            children: [
+              _buildAppNavigation(),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Container(
+                    decoration: AppDecoration.fillOnPrimaryContainer,
+                    child: Column(
+                      children: [
+                        _buildScreenTitle(
+                          screenTitle: "msg_iphone_14_15_pro".tr,
+                          onTapScreenTitle: () => onTapScreenTitle(
+                              AppRoutes.iphone1415ProMaxTwentysixScreen),
                         ),
-                      ),
+                        _buildScreenTitle(
+                          screenTitle: "msg_iphone_14_15_pro2".tr,
+                          onTapScreenTitle: () => onTapScreenTitle(
+                              AppRoutes.iphone1415ProMaxTwentythreeScreen),
+                        ),
+                        _buildScreenTitle(
+                          screenTitle: "msg_iphone_14_15_pro3".tr,
+                          onTapScreenTitle: () => onTapScreenTitle(
+                              AppRoutes.iphone1415ProMaxEighteenScreen),
+                        ),
+                        _buildScreenTitle(
+                          screenTitle: "msg_iphone_14_15_pro4".tr,
+                          onTapScreenTitle: () => onTapScreenTitle(
+                              AppRoutes.iphone1415ProMaxNineteenScreen),
+                        ),
+                        _buildScreenTitle(
+                          screenTitle: "msg_iphone_14_15_pro5".tr,
+                          onTapScreenTitle: () => onTapScreenTitle(
+                              AppRoutes.iphone1415ProMaxTwentyScreen),
+                        ),
+                        _buildScreenTitle(
+                          screenTitle: "msg_iphone_14_15_pro6".tr,
+                          onTapScreenTitle: () => onTapScreenTitle(
+                              AppRoutes.iphone1415ProMaxTwentyoneScreen),
+                        ),
+                        _buildScreenTitle(
+                          screenTitle: "msg_iphone_14_15_pro7".tr,
+                          onTapScreenTitle: () => onTapScreenTitle(
+                              AppRoutes.iphone1415ProMaxTwentytwoScreen),
+                        ),
+                        _buildScreenTitle(
+                          screenTitle: "msg_iphone_14_15_pro8".tr,
+                          onTapScreenTitle: () => onTapScreenTitle(
+                              AppRoutes.iphone1415ProMaxEightScreen),
+                        ),
+                        _buildScreenTitle(
+                          screenTitle: "msg_iphone_14_15_pro9".tr,
+                          onTapScreenTitle: () => onTapScreenTitle(
+                              AppRoutes.iphone1415ProMaxOneScreen),
+                        ),
+                        _buildScreenTitle(
+                          screenTitle: "msg_iphone_14_15_pro10".tr,
+                          onTapScreenTitle: () => onTapScreenTitle(
+                              AppRoutes.iphone1415ProMaxTwoScreen),
+                        ),
+                        _buildScreenTitle(
+                          screenTitle: "msg_iphone_14_15_pro11".tr,
+                          onTapScreenTitle: () => onTapScreenTitle(
+                              AppRoutes.iphone1415ProMaxThreeScreen),
+                        ),
+                        _buildScreenTitle(
+                          screenTitle: "msg_iphone_14_15_pro12".tr,
+                          onTapScreenTitle: () => onTapScreenTitle(
+                              AppRoutes.iphone1415ProMaxFourScreen),
+                        ),
+                        _buildScreenTitle(
+                          screenTitle: "msg_iphone_14_15_pro13".tr,
+                          onTapScreenTitle: () => onTapScreenTitle(
+                              AppRoutes.iphone1415ProMaxFiveScreen),
+                        ),
+                        _buildScreenTitle(
+                          screenTitle: "msg_iphone_14_15_pro14".tr,
+                          onTapScreenTitle: () => onTapScreenTitle(
+                              AppRoutes.iphone1415ProMaxSixScreen),
+                        ),
+                        _buildScreenTitle(
+                          screenTitle: "msg_iphone_14_15_pro15".tr,
+                          onTapScreenTitle: () => onTapScreenTitle(
+                              AppRoutes.iphone1415ProMaxSevenContainerScreen),
+                        ),
+                        _buildScreenTitle(
+                          screenTitle: "lbl_calendar".tr,
+                          onTapScreenTitle: () =>
+                              onTapScreenTitle(AppRoutes.calendarScreen),
+                        ),
+                        _buildScreenTitle(
+                          screenTitle: "lbl_calendar_one".tr,
+                          onTapScreenTitle: () =>
+                              onTapScreenTitle(AppRoutes.calendarOneScreen),
+                        ),
+                        _buildScreenTitle(
+                          screenTitle: "lbl_calendar_two".tr,
+                          onTapScreenTitle: () =>
+                              onTapScreenTitle(AppRoutes.calendarTwoScreen),
+                        ),
+                        _buildScreenTitle(
+                          screenTitle: "lbl_calendar_three".tr,
+                          onTapScreenTitle: () =>
+                              onTapScreenTitle(AppRoutes.calendarThreeScreen),
+                        ),
+                        _buildScreenTitle(
+                          screenTitle: "lbl_calendar_four".tr,
+                          onTapScreenTitle: () =>
+                              onTapScreenTitle(AppRoutes.calendarFourScreen),
+                        ),
+                        _buildScreenTitle(
+                          screenTitle: "msg_iphone_14_15_pro16".tr,
+                          onTapScreenTitle: () => onTapScreenTitle(
+                              AppRoutes.iphone1415ProMaxSeventeenScreen),
+                        ),
+                        _buildScreenTitle(
+                          screenTitle: "msg_iphone_14_15_pro17".tr,
+                          onTapScreenTitle: () => onTapScreenTitle(
+                              AppRoutes.iphone1415ProMaxTwentyfiveScreen),
+                        ),
+                        _buildScreenTitle(
+                          screenTitle: "msg_iphone_14_15_pro18".tr,
+                          onTapScreenTitle: () => onTapScreenTitle(
+                              AppRoutes.iphone1415ProMaxTwentyfourScreen),
+                        ),
+                        _buildScreenTitle(
+                          screenTitle: "msg_iphone_14_15_pro19".tr,
+                          onTapScreenTitle: () => onTapScreenTitle(
+                              AppRoutes.iphone1415ProMaxTwentysevenScreen),
+                        ),
+                        _buildScreenTitle(
+                          screenTitle: "msg_iphone_14_15_pro20".tr,
+                          onTapScreenTitle: () => onTapScreenTitle(
+                              AppRoutes.iphone1415ProMaxTwentyeightScreen),
+                        ),
+                        _buildScreenTitle(
+                          screenTitle: "lbl_calendar_five".tr,
+                          onTapScreenTitle: () =>
+                              onTapScreenTitle(AppRoutes.calendarFiveScreen),
+                        )
+                      ],
                     ),
-                  )
-                ],
-              ),
-            ),
+                  ),
+                ),
+              )
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
   /// Section Widget
-  Widget _buildAppNavigation(BuildContext context) {
+  Widget _buildAppNavigation() {
     return Container(
       decoration: AppDecoration.fillOnPrimaryContainer,
       child: Column(
@@ -260,8 +218,7 @@ class AppNavigationScreen extends StatelessWidget {
   }
 
   /// Common widget
-  Widget _buildScreenTitle(
-    BuildContext context, {
+  Widget _buildScreenTitle({
     required String screenTitle,
     Function? onTapScreenTitle,
   }) {
@@ -305,6 +262,6 @@ class AppNavigationScreen extends StatelessWidget {
 
   /// Common click event
   void onTapScreenTitle(String routeName) {
-    NavigatorService.pushNamed(routeName);
+    Get.toNamed(routeName);
   }
 }

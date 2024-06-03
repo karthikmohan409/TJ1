@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../core/app_export.dart';
 import '../../../theme/custom_button_style.dart';
 import '../../../widgets/custom_elevated_button.dart';
+import '../controller/iphone_14_15_pro_max_twentyfive_controller.dart';
 import '../models/pricinglist_item_model.dart'; // ignore: must_be_immutable
 // ignore_for_file: must_be_immutable
 
@@ -13,6 +14,8 @@ class PricinglistItemWidget extends StatelessWidget {
         );
 
   PricinglistItemModel pricinglistItemModelObj;
+
+  var controller = Get.find<Iphone1415ProMaxTwentyfiveController>();
 
   @override
   Widget build(BuildContext context) {
@@ -42,12 +45,14 @@ class PricinglistItemWidget extends StatelessWidget {
               children: [
                 SizedBox(
                   width: 188.h,
-                  child: Text(
-                    pricinglistItemModelObj.monthlyPriceTex!,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: CustomTextStyles.bodyLargeBluegray80001.copyWith(
-                      height: 1.48,
+                  child: Obx(
+                    () => Text(
+                      pricinglistItemModelObj.monthlyPriceTex!.value,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: CustomTextStyles.bodyLargeBluegray80001.copyWith(
+                        height: 1.48,
+                      ),
                     ),
                   ),
                 ),
@@ -62,9 +67,11 @@ class PricinglistItemWidget extends StatelessWidget {
                           top: 6.v,
                           bottom: 4.v,
                         ),
-                        child: Text(
-                          pricinglistItemModelObj.priceAmountText!,
-                          style: CustomTextStyles.titleMediumBluegray80001,
+                        child: Obx(
+                          () => Text(
+                            pricinglistItemModelObj.priceAmountText!.value,
+                            style: CustomTextStyles.titleMediumBluegray80001,
+                          ),
                         ),
                       ),
                       Padding(
@@ -73,13 +80,15 @@ class PricinglistItemWidget extends StatelessWidget {
                           top: 8.v,
                           bottom: 6.v,
                         ),
-                        child: Text(
-                          pricinglistItemModelObj.hstWeekText!,
-                          style: CustomTextStyles.bodyMediumBluegray80001,
+                        child: Obx(
+                          () => Text(
+                            pricinglistItemModelObj.hstWeekText!.value,
+                            style: CustomTextStyles.bodyMediumBluegray80001,
+                          ),
                         ),
                       ),
                       Spacer(),
-                      _buildRegisterButtonDays(context)
+                      _buildRegisterButtonDays()
                     ],
                   ),
                 )
@@ -92,7 +101,7 @@ class PricinglistItemWidget extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildRegisterButtonDays(BuildContext context) {
+  Widget _buildRegisterButtonDays() {
     return CustomElevatedButton(
       height: 32.v,
       width: 86.h,

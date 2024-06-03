@@ -7,30 +7,16 @@ import '../../widgets/custom_bottom_bar.dart';
 import '../iphone_14_15_pro_max_nine_tab_container_page/iphone_14_15_pro_max_nine_tab_container_page.dart';
 import '../iphone_14_15_pro_max_seven_page/iphone_14_15_pro_max_seven_page.dart';
 import '../iphone_14_15_pro_max_sixteen_page/iphone_14_15_pro_max_sixteen_page.dart';
-import 'bloc/iphone_14_15_pro_max_seventeen_bloc.dart';
+import 'controller/iphone_14_15_pro_max_seventeen_controller.dart';
 import 'models/bookingdetails_item_model.dart';
-import 'models/iphone_14_15_pro_max_seventeen_model.dart';
 import 'widgets/bookingdetails_item_widget.dart'; // ignore_for_file: must_be_immutable
 
-// ignore_for_file: must_be_immutable
-class Iphone1415ProMaxSeventeenScreen extends StatelessWidget {
-  Iphone1415ProMaxSeventeenScreen({Key? key})
+class Iphone1415ProMaxSeventeenScreen
+    extends GetWidget<Iphone1415ProMaxSeventeenController> {
+  const Iphone1415ProMaxSeventeenScreen({Key? key})
       : super(
           key: key,
         );
-
-  GlobalKey<NavigatorState> navigatorKey = GlobalKey();
-
-  static Widget builder(BuildContext context) {
-    return BlocProvider<Iphone1415ProMaxSeventeenBloc>(
-      create: (context) =>
-          Iphone1415ProMaxSeventeenBloc(Iphone1415ProMaxSeventeenState(
-        iphone1415ProMaxSeventeenModelObj: Iphone1415ProMaxSeventeenModel(),
-      ))
-            ..add(Iphone1415ProMaxSeventeenInitialEvent()),
-      child: Iphone1415ProMaxSeventeenScreen(),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +24,14 @@ class Iphone1415ProMaxSeventeenScreen extends StatelessWidget {
       child: Scaffold(
         extendBody: true,
         extendBodyBehindAppBar: true,
-        appBar: _buildAppBar(context),
+        appBar: _buildAppBar(),
         body: Container(
           width: SizeUtils.width,
           height: SizeUtils.height,
+          padding: EdgeInsets.only(
+            top: 56.v,
+            bottom: 79.v,
+          ),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment(0.4, 0.97),
@@ -67,7 +57,7 @@ class Iphone1415ProMaxSeventeenScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 14.v),
-                _buildCalendarSection(context),
+                _buildCalendarSection(),
                 SizedBox(height: 22.v),
                 Divider(
                   color: theme.colorScheme.onPrimaryContainer.withOpacity(0.1),
@@ -100,18 +90,18 @@ class Iphone1415ProMaxSeventeenScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 12.v),
-                _buildBookingDetails(context)
+                _buildBookingDetails()
               ],
             ),
           ),
         ),
-        bottomNavigationBar: _buildBottomBar(context),
+        bottomNavigationBar: _buildBottomBar(),
       ),
     );
   }
 
   /// Section Widget
-  PreferredSizeWidget _buildAppBar(BuildContext context) {
+  PreferredSizeWidget _buildAppBar() {
     return CustomAppBar(
       centerTitle: true,
       title: Column(
@@ -140,136 +130,129 @@ class Iphone1415ProMaxSeventeenScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildCalendarSection(BuildContext context) {
-    return BlocBuilder<Iphone1415ProMaxSeventeenBloc,
-        Iphone1415ProMaxSeventeenState>(
-      builder: (context, state) {
-        return SizedBox(
-          height: 75.v,
-          width: 380.h,
-          child: EasyDateTimeLine(
-            initialDate: state.selectedDatesFromCalendar ?? DateTime.now(),
-            locale: 'en_US',
-            headerProps: EasyHeaderProps(
-              selectedDateFormat: SelectedDateFormat.fullDateDMY,
-              monthPickerType: MonthPickerType.switcher,
-              showHeader: false,
-            ),
-            dayProps: EasyDayProps(
-              width: 49.h,
-              height: 60.v,
-            ),
-            onDateChange: (selectedDate) {
-              state.selectedDatesFromCalendar = selectedDate;
-            },
-            itemBuilder:
-                (context, dayNumber, dayName, monthName, fullDate, isSelected) {
-              return isSelected
-                  ? Container(
-                      width: 49.h,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 13.h,
-                        vertical: 5.v,
+  Widget _buildCalendarSection() {
+    return Obx(
+      () => SizedBox(
+        height: 75.v,
+        width: 380.h,
+        child: EasyDateTimeLine(
+          initialDate: controller.selectedDatesFromCalendar.value,
+          locale: 'en_US',
+          headerProps: EasyHeaderProps(
+            selectedDateFormat: SelectedDateFormat.fullDateDMY,
+            monthPickerType: MonthPickerType.switcher,
+            showHeader: false,
+          ),
+          dayProps: EasyDayProps(
+            width: 49.h,
+            height: 60.v,
+          ),
+          onDateChange: (selectedDate) {
+            controller.selectedDatesFromCalendar.value = selectedDate;
+          },
+          itemBuilder:
+              (context, dayNumber, dayName, monthName, fullDate, isSelected) {
+            return isSelected
+                ? Container(
+                    width: 49.h,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 13.h,
+                      vertical: 5.v,
+                    ),
+                    decoration: BoxDecoration(
+                      color: appTheme.cyan5023,
+                      borderRadius: BorderRadius.circular(
+                        14.h,
                       ),
-                      decoration: BoxDecoration(
-                        color: appTheme.cyan5023,
-                        borderRadius: BorderRadius.circular(
-                          14.h,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          dayName.toString(),
+                          style: theme.textTheme.titleMedium!.copyWith(
+                            color: theme.colorScheme.onPrimaryContainer
+                                .withOpacity(1),
+                          ),
                         ),
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            dayName.toString(),
-                            style: theme.textTheme.titleMedium!.copyWith(
+                        Padding(
+                          padding: EdgeInsets.only(
+                            top: 6.v,
+                            bottom: 1.v,
+                          ),
+                          child: Text(
+                            dayNumber.toString(),
+                            style: CustomTextStyles
+                                .bodyLargeOnPrimaryContainer_6
+                                .copyWith(
                               color: theme.colorScheme.onPrimaryContainer
                                   .withOpacity(1),
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                              top: 6.v,
-                              bottom: 1.v,
-                            ),
-                            child: Text(
-                              dayNumber.toString(),
-                              style: CustomTextStyles
-                                  .bodyLargeOnPrimaryContainer_6
-                                  .copyWith(
-                                color: theme.colorScheme.onPrimaryContainer
-                                    .withOpacity(1),
-                              ),
-                            ),
-                          )
-                        ],
-                      ))
-                  : Container(
-                      height: 11.adaptSize,
-                      width: 11.adaptSize,
-                      decoration: BoxDecoration(
-                        color: theme.colorScheme.errorContainer,
-                        borderRadius: BorderRadius.circular(
-                          5.h,
-                        ),
+                        )
+                      ],
+                    ))
+                : Container(
+                    height: 11.adaptSize,
+                    width: 11.adaptSize,
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.errorContainer,
+                      borderRadius: BorderRadius.circular(
+                        5.h,
                       ),
-                    );
-            },
-          ),
-        );
-      },
-    );
-  }
-
-  /// Section Widget
-  Widget _buildBookingDetails(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 4.h),
-      child: BlocSelector<Iphone1415ProMaxSeventeenBloc,
-          Iphone1415ProMaxSeventeenState, Iphone1415ProMaxSeventeenModel?>(
-        selector: (state) => state.iphone1415ProMaxSeventeenModelObj,
-        builder: (context, iphone1415ProMaxSeventeenModelObj) {
-          return ListView.separated(
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            separatorBuilder: (context, index) {
-              return Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.5.v),
-                child: SizedBox(
-                  width: 365.h,
-                  child: Divider(
-                    height: 1.v,
-                    thickness: 1.v,
-                    color: appTheme.blueGray80001,
-                  ),
-                ),
-              );
-            },
-            itemCount: iphone1415ProMaxSeventeenModelObj
-                    ?.bookingdetailsItemList.length ??
-                0,
-            itemBuilder: (context, index) {
-              BookingdetailsItemModel model = iphone1415ProMaxSeventeenModelObj
-                      ?.bookingdetailsItemList[index] ??
-                  BookingdetailsItemModel();
-              return BookingdetailsItemWidget(
-                model,
-              );
-            },
-          );
-        },
+                    ),
+                  );
+          },
+        ),
       ),
     );
   }
 
   /// Section Widget
-  Widget _buildBottomBar(BuildContext context) {
+  Widget _buildBookingDetails() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 4.h),
+      child: Obx(
+        () => ListView.separated(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          separatorBuilder: (context, index) {
+            return Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.5.v),
+              child: SizedBox(
+                width: 365.h,
+                child: Divider(
+                  height: 1.v,
+                  thickness: 1.v,
+                  color: appTheme.blueGray80001,
+                ),
+              ),
+            );
+          },
+          itemCount: controller.iphone1415ProMaxSeventeenModelObj.value
+              .bookingdetailsItemList.value.length,
+          itemBuilder: (context, index) {
+            BookingdetailsItemModel model = controller
+                .iphone1415ProMaxSeventeenModelObj
+                .value
+                .bookingdetailsItemList
+                .value[index];
+            return BookingdetailsItemWidget(
+              model,
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  /// Section Widget
+  Widget _buildBottomBar() {
     return CustomBottomBar(
       onChanged: (BottomBarEnum type) {
-        Navigator.pushNamed(
-            navigatorKey.currentContext!, getCurrentRoute(type));
+        Get.toNamed(getCurrentRoute(type), id: 1);
       },
     );
   }
@@ -293,17 +276,14 @@ class Iphone1415ProMaxSeventeenScreen extends StatelessWidget {
   }
 
   ///Handling page based on route
-  Widget getCurrentPage(
-    BuildContext context,
-    String currentRoute,
-  ) {
+  Widget getCurrentPage(String currentRoute) {
     switch (currentRoute) {
       case AppRoutes.iphone1415ProMaxSevenPage:
-        return Iphone1415ProMaxSevenPage.builder(context);
+        return Iphone1415ProMaxSevenPage();
       case AppRoutes.iphone1415ProMaxNineTabContainerPage:
-        return Iphone1415ProMaxNineTabContainerPage.builder(context);
+        return Iphone1415ProMaxNineTabContainerPage();
       case AppRoutes.iphone1415ProMaxSixteenPage:
-        return Iphone1415ProMaxSixteenPage.builder(context);
+        return Iphone1415ProMaxSixteenPage();
       default:
         return DefaultWidget();
     }

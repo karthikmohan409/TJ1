@@ -1,4 +1,7 @@
+import '../../../core/app_export.dart';
+
 /// This class is used in the [bookingdetails_item_widget] screen.
+// ignore_for_file: must_be_immutable
 
 // ignore_for_file: must_be_immutable
 class BookingdetailsItemModel {
@@ -9,23 +12,23 @@ class BookingdetailsItemModel {
       this.duration,
       this.date,
       this.id}) {
-    tableName = tableName ?? "Table tennis | Court 1";
-    tablePrice = tablePrice ?? "\$30";
-    timeSlot = timeSlot ?? "10:00 am - 11:00 am";
-    duration = duration ?? "1hr";
-    date = date ?? "21-Mar-2024";
-    id = id ?? "";
+    tableName = tableName ?? Rx("Table tennis | Court 1");
+    tablePrice = tablePrice ?? Rx("\$30");
+    timeSlot = timeSlot ?? Rx("10:00 am - 11:00 am");
+    duration = duration ?? Rx("1hr");
+    date = date ?? Rx("21-Mar-2024");
+    id = id ?? Rx("");
   }
 
-  String? tableName;
+  Rx<String>? tableName;
 
-  String? tablePrice;
+  Rx<String>? tablePrice;
 
-  String? timeSlot;
+  Rx<String>? timeSlot;
 
-  String? duration;
+  Rx<String>? duration;
 
-  String? date;
+  Rx<String>? date;
 
-  String? id;
+  Rx<String>? id;
 }

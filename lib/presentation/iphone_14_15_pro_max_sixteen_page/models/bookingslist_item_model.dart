@@ -13,26 +13,26 @@ class BookingslistItemModel {
       this.durationText,
       this.dateText,
       this.id}) {
-    musicImage = musicImage ?? ImageConstant.imgMusic;
-    badmintonCourtT = badmintonCourtT ?? "Badminton | Court 1";
-    priceText = priceText ?? "\$30";
-    timeText = timeText ?? "08:00 am - 09:00 am";
-    durationText = durationText ?? "1hr";
-    dateText = dateText ?? "21-Mar-2024";
-    id = id ?? "";
+    musicImage = musicImage ?? Rx(ImageConstant.imgMusic);
+    badmintonCourtT = badmintonCourtT ?? Rx("Badminton | Court 1");
+    priceText = priceText ?? Rx("\$30");
+    timeText = timeText ?? Rx("08:00 am - 09:00 am");
+    durationText = durationText ?? Rx("1hr");
+    dateText = dateText ?? Rx("21-Mar-2024");
+    id = id ?? Rx("");
   }
 
-  String? musicImage;
+  Rx<String>? musicImage;
 
-  String? badmintonCourtT;
+  Rx<String>? badmintonCourtT;
 
-  String? priceText;
+  Rx<String>? priceText;
 
-  String? timeText;
+  Rx<String>? timeText;
 
-  String? durationText;
+  Rx<String>? durationText;
 
-  String? dateText;
+  Rx<String>? dateText;
 
-  String? id;
+  Rx<String>? id;
 }

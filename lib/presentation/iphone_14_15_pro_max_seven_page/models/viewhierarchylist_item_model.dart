@@ -6,17 +6,17 @@ import '../../../core/app_export.dart';
 // ignore_for_file: must_be_immutable
 class ViewhierarchylistItemModel {
   ViewhierarchylistItemModel({this.image1, this.image2, this.text1, this.id}) {
-    image1 = image1 ?? ImageConstant.imgRectangle10;
-    image2 = image2 ?? ImageConstant.imgRectangle9188x233;
-    text1 = text1 ?? "Badminton";
-    id = id ?? "";
+    image1 = image1 ?? Rx(ImageConstant.imgRectangle10);
+    image2 = image2 ?? Rx(ImageConstant.imgRectangle9188x233);
+    text1 = text1 ?? Rx("Badminton");
+    id = id ?? Rx("");
   }
 
-  String? image1;
+  Rx<String>? image1;
 
-  String? image2;
+  Rx<String>? image2;
 
-  String? text1;
+  Rx<String>? text1;
 
-  String? id;
+  Rx<String>? id;
 }

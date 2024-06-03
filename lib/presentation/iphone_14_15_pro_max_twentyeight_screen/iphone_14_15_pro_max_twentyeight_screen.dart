@@ -4,25 +4,14 @@ import '../../theme/custom_button_style.dart';
 import '../../widgets/custom_checkbox_button.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_outlined_button.dart';
-import 'bloc/iphone_14_15_pro_max_twentyeight_bloc.dart';
-import 'models/iphone_14_15_pro_max_twentyeight_model.dart';
+import 'controller/iphone_14_15_pro_max_twentyeight_controller.dart'; // ignore_for_file: must_be_immutable
 
-class Iphone1415ProMaxTwentyeightScreen extends StatelessWidget {
+class Iphone1415ProMaxTwentyeightScreen
+    extends GetWidget<Iphone1415ProMaxTwentyeightController> {
   const Iphone1415ProMaxTwentyeightScreen({Key? key})
       : super(
           key: key,
         );
-
-  static Widget builder(BuildContext context) {
-    return BlocProvider<Iphone1415ProMaxTwentyeightBloc>(
-      create: (context) =>
-          Iphone1415ProMaxTwentyeightBloc(Iphone1415ProMaxTwentyeightState(
-        iphone1415ProMaxTwentyeightModelObj: Iphone1415ProMaxTwentyeightModel(),
-      ))
-            ..add(Iphone1415ProMaxTwentyeightInitialEvent()),
-      child: Iphone1415ProMaxTwentyeightScreen(),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,9 +74,9 @@ class Iphone1415ProMaxTwentyeightScreen extends StatelessWidget {
                                   ),
                                 ),
                                 SizedBox(height: 20.v),
-                                _buildPrivacyPolicyAgreement(context),
+                                _buildPrivacyPolicyAgreement(),
                                 SizedBox(height: 98.v),
-                                _buildActionButtons(context)
+                                _buildActionButtons()
                               ],
                             ),
                           )
@@ -105,30 +94,24 @@ class Iphone1415ProMaxTwentyeightScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildPrivacyPolicyAgreement(BuildContext context) {
+  Widget _buildPrivacyPolicyAgreement() {
     return Padding(
       padding: EdgeInsets.only(right: 85.h),
-      child: BlocSelector<Iphone1415ProMaxTwentyeightBloc,
-          Iphone1415ProMaxTwentyeightState, bool?>(
-        selector: (state) => state.privacyPolicyAgreement,
-        builder: (context, privacyPolicyAgreement) {
-          return CustomCheckboxButton(
-            text: "msg_i_agree_to_the_privacy".tr,
-            value: privacyPolicyAgreement,
-            textStyle: CustomTextStyles.titleMediumPrimary,
-            onChange: (value) {
-              context
-                  .read<Iphone1415ProMaxTwentyeightBloc>()
-                  .add(ChangeCheckBoxEvent(value: value));
-            },
-          );
-        },
+      child: Obx(
+        () => CustomCheckboxButton(
+          text: "msg_i_agree_to_the_privacy".tr,
+          value: controller.privacyPolicyAgreement.value,
+          textStyle: CustomTextStyles.titleMediumPrimary,
+          onChange: (value) {
+            controller.privacyPolicyAgreement.value = value;
+          },
+        ),
       ),
     );
   }
 
   /// Section Widget
-  Widget _buildActionButtons(BuildContext context) {
+  Widget _buildActionButtons() {
     return Align(
       alignment: Alignment.center,
       child: Padding(

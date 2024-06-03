@@ -10,11 +10,11 @@ import '../../widgets/custom_checkbox_button.dart';
 import '../../widgets/custom_drop_down.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_text_form_field.dart';
-import 'bloc/calendar_two_bloc.dart';
-import 'models/calendar_two_model.dart'; // ignore_for_file: must_be_immutable
+import 'controller/calendar_two_controller.dart'; // ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable
 
 // ignore_for_file: must_be_immutable
-class CalendarTwoScreen extends StatelessWidget {
+class CalendarTwoScreen extends GetWidget<CalendarTwoController> {
   CalendarTwoScreen({Key? key})
       : super(
           key: key,
@@ -22,23 +22,13 @@ class CalendarTwoScreen extends StatelessWidget {
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  static Widget builder(BuildContext context) {
-    return BlocProvider<CalendarTwoBloc>(
-      create: (context) => CalendarTwoBloc(CalendarTwoState(
-        calendarTwoModelObj: CalendarTwoModel(),
-      ))
-        ..add(CalendarTwoInitialEvent()),
-      child: CalendarTwoScreen(),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: theme.colorScheme.onPrimaryContainer.withOpacity(1),
         resizeToAvoidBottomInset: false,
-        appBar: _buildAppbarSection(context),
+        backgroundColor: theme.colorScheme.onPrimaryContainer.withOpacity(1),
+        appBar: _buildAppbarSection(),
         body: SingleChildScrollView(
           padding: EdgeInsets.only(
             bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -53,13 +43,13 @@ class CalendarTwoScreen extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  _buildCalendarDetailsSection(context),
+                  _buildCalendarDetailsSection(),
                   SizedBox(height: 27.v),
-                  _buildCardInformationSection(context),
+                  _buildCardInformationSection(),
                   SizedBox(height: 27.v),
-                  _buildCountryRegionSection(context),
+                  _buildCountryRegionSection(),
                   SizedBox(height: 27.v),
-                  _buildSaveCardCheckbox(context),
+                  _buildSaveCardCheckbox(),
                   SizedBox(height: 46.v),
                   CustomElevatedButton(
                     text: "lbl_pay_30".tr,
@@ -71,13 +61,13 @@ class CalendarTwoScreen extends StatelessWidget {
                     buttonTextStyle:
                         CustomTextStyles.titleLargeOnPrimaryContainer_1,
                     onPressed: () {
-                      onTapPay30(context);
+                      onTapPay30();
                     },
                   ),
                   SizedBox(height: 21.v),
                   GestureDetector(
                     onTap: () {
-                      onTapTxtBack(context);
+                      onTapTxtBack();
                     },
                     child: Text(
                       "lbl_back".tr,
@@ -95,7 +85,7 @@ class CalendarTwoScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  PreferredSizeWidget _buildAppbarSection(BuildContext context) {
+  PreferredSizeWidget _buildAppbarSection() {
     return CustomAppBar(
       centerTitle: true,
       title: Column(
@@ -135,7 +125,7 @@ class CalendarTwoScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildCalendarDetailsSection(BuildContext context) {
+  Widget _buildCalendarDetailsSection() {
     return Container(
       margin: EdgeInsets.only(left: 3.h),
       padding: EdgeInsets.symmetric(vertical: 14.v),
@@ -156,7 +146,7 @@ class CalendarTwoScreen extends StatelessWidget {
                   height: 21.adaptSize,
                   width: 21.adaptSize,
                   onTap: () {
-                    onTapImgCalendarone(context);
+                    onTapImgCalendarone();
                   },
                 ),
                 Padding(
@@ -239,7 +229,7 @@ class CalendarTwoScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildCardInformationSection(BuildContext context) {
+  Widget _buildCardInformationSection() {
     return Padding(
       padding: EdgeInsets.only(left: 3.h),
       child: Column(
@@ -313,31 +303,24 @@ class CalendarTwoScreen extends StatelessWidget {
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 17.v),
-                    child: BlocSelector<CalendarTwoBloc, CalendarTwoState,
-                        TextEditingController?>(
-                      selector: (state) => state.cardNumberController,
-                      builder: (context, cardNumberController) {
-                        return CustomTextFormField(
-                          width: 375.h,
-                          controller: cardNumberController,
-                          hintText: "lbl_card_number".tr,
-                          hintStyle: CustomTextStyles.bodyLargeBlack900_3,
-                          textInputAction: TextInputAction.done,
-                          textInputType: TextInputType.number,
-                          alignment: Alignment.topCenter,
-                          validator: (value) {
-                            if (!isNumeric(value)) {
-                              return "err_msg_please_enter_valid_number".tr;
-                            }
-                            return null;
-                          },
-                          contentPadding:
-                              EdgeInsets.symmetric(horizontal: 22.h),
-                          borderDecoration:
-                              TextFormFieldStyleHelper.underLineDeepPurple,
-                          filled: false,
-                        );
+                    child: CustomTextFormField(
+                      width: 375.h,
+                      controller: controller.cardNumberController,
+                      hintText: "lbl_card_number".tr,
+                      hintStyle: CustomTextStyles.bodyLargeBlack900_3,
+                      textInputAction: TextInputAction.done,
+                      textInputType: TextInputType.number,
+                      alignment: Alignment.topCenter,
+                      validator: (value) {
+                        if (!isNumeric(value)) {
+                          return "err_msg_please_enter_valid_number".tr;
+                        }
+                        return null;
                       },
+                      contentPadding: EdgeInsets.symmetric(horizontal: 22.h),
+                      borderDecoration:
+                          TextFormFieldStyleHelper.underLineDeepPurple,
+                      filled: false,
                     ),
                   )
                 ],
@@ -350,7 +333,7 @@ class CalendarTwoScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildCountryRegionSection(BuildContext context) {
+  Widget _buildCountryRegionSection() {
     return Padding(
       padding: EdgeInsets.only(left: 3.h),
       child: Column(
@@ -377,23 +360,18 @@ class CalendarTwoScreen extends StatelessWidget {
               children: [
                 Padding(
                   padding: EdgeInsets.only(left: 1.h),
-                  child: BlocSelector<CalendarTwoBloc, CalendarTwoState,
-                      CalendarTwoModel?>(
-                    selector: (state) => state.calendarTwoModelObj,
-                    builder: (context, calendarTwoModelObj) {
-                      return CustomDropDown(
-                        icon: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 23.h),
-                          child: CustomImageView(
-                            imagePath: ImageConstant.imgArrowdown,
-                            height: 10.v,
-                            width: 13.h,
-                          ),
-                        ),
-                        hintText: "lbl_canada".tr,
-                        items: calendarTwoModelObj?.dropdownItemList ?? [],
-                      );
-                    },
+                  child: CustomDropDown(
+                    icon: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 23.h),
+                      child: CustomImageView(
+                        imagePath: ImageConstant.imgArrowdown,
+                        height: 10.v,
+                        width: 13.h,
+                      ),
+                    ),
+                    hintText: "lbl_canada".tr,
+                    items: controller
+                        .calendarTwoModelObj.value.dropdownItemList!.value,
                   ),
                 ),
                 SizedBox(height: 14.v),
@@ -413,7 +391,7 @@ class CalendarTwoScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildSaveCardCheckbox(BuildContext context) {
+  Widget _buildSaveCardCheckbox() {
     return Align(
       alignment: Alignment.centerLeft,
       child: Padding(
@@ -421,43 +399,38 @@ class CalendarTwoScreen extends StatelessWidget {
           left: 3.h,
           right: 66.h,
         ),
-        child: BlocSelector<CalendarTwoBloc, CalendarTwoState, bool?>(
-          selector: (state) => state.saveCardCheckbox,
-          builder: (context, saveCardCheckbox) {
-            return CustomCheckboxButton(
-              alignment: Alignment.centerLeft,
-              text: "msg_save_this_card_for".tr,
-              value: saveCardCheckbox,
-              textStyle: CustomTextStyles.bodyLargeBlack900_2,
-              onChange: (value) {
-                context
-                    .read<CalendarTwoBloc>()
-                    .add(ChangeCheckBoxEvent(value: value));
-              },
-            );
-          },
+        child: Obx(
+          () => CustomCheckboxButton(
+            alignment: Alignment.centerLeft,
+            text: "msg_save_this_card_for".tr,
+            value: controller.saveCardCheckbox.value,
+            textStyle: CustomTextStyles.bodyLargeBlack900_2,
+            onChange: (value) {
+              controller.saveCardCheckbox.value = value;
+            },
+          ),
         ),
       ),
     );
   }
 
   /// Navigates to the calendarThreeScreen when the action is triggered.
-  onTapImgCalendarone(BuildContext context) {
-    NavigatorService.pushNamed(
+  onTapImgCalendarone() {
+    Get.toNamed(
       AppRoutes.calendarThreeScreen,
     );
   }
 
   /// Navigates to the iphone1415ProMaxEightScreen when the action is triggered.
-  onTapPay30(BuildContext context) {
-    NavigatorService.pushNamed(
+  onTapPay30() {
+    Get.toNamed(
       AppRoutes.iphone1415ProMaxEightScreen,
     );
   }
 
   /// Navigates to the calendarOneScreen when the action is triggered.
-  onTapTxtBack(BuildContext context) {
-    NavigatorService.pushNamed(
+  onTapTxtBack() {
+    Get.toNamed(
       AppRoutes.calendarOneScreen,
     );
   }

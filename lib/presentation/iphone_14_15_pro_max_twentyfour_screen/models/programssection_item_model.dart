@@ -1,13 +1,16 @@
+import '../../../core/app_export.dart';
+
 /// This class is used in the [programssection_item_widget] screen.
+// ignore_for_file: must_be_immutable
 
 // ignore_for_file: must_be_immutable
 class ProgramssectionItemModel {
   ProgramssectionItemModel({this.groupBy, this.id}) {
-    groupBy = groupBy ?? "";
-    id = id ?? "";
+    groupBy = groupBy ?? Rx("");
+    id = id ?? Rx("");
   }
 
-  String? groupBy;
+  Rx<String>? groupBy;
 
-  String? id;
+  Rx<String>? id;
 }

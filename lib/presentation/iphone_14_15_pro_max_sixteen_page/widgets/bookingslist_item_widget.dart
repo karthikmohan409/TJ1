@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart' as fs;
 import '../../../core/app_export.dart';
+import '../controller/iphone_14_15_pro_max_sixteen_controller.dart';
 import '../models/bookingslist_item_model.dart'; // ignore: must_be_immutable
 // ignore_for_file: must_be_immutable
 
@@ -12,6 +13,8 @@ class BookingslistItemWidget extends StatelessWidget {
         );
 
   BookingslistItemModel bookingslistItemModelObj;
+
+  var controller = Get.find<Iphone1415ProMaxSixteenController>();
 
   @override
   Widget build(BuildContext context) {
@@ -35,23 +38,29 @@ class BookingslistItemWidget extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CustomImageView(
-                  imagePath: bookingslistItemModelObj.musicImage!,
-                  height: 20.adaptSize,
-                  width: 20.adaptSize,
-                  margin: EdgeInsets.only(bottom: 2.v),
+                Obx(
+                  () => CustomImageView(
+                    imagePath: bookingslistItemModelObj.musicImage!.value,
+                    height: 20.adaptSize,
+                    width: 20.adaptSize,
+                    margin: EdgeInsets.only(bottom: 2.v),
+                  ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 13.h),
-                  child: Text(
-                    bookingslistItemModelObj.badmintonCourtT!,
-                    style: theme.textTheme.bodyLarge,
+                  child: Obx(
+                    () => Text(
+                      bookingslistItemModelObj.badmintonCourtT!.value,
+                      style: theme.textTheme.bodyLarge,
+                    ),
                   ),
                 ),
                 Spacer(),
-                Text(
-                  bookingslistItemModelObj.priceText!,
-                  style: CustomTextStyles.titleMediumBluegray800,
+                Obx(
+                  () => Text(
+                    bookingslistItemModelObj.priceText!.value,
+                    style: CustomTextStyles.titleMediumBluegray800,
+                  ),
                 )
               ],
             ),
@@ -76,15 +85,19 @@ class BookingslistItemWidget extends StatelessWidget {
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 11.h),
-                  child: Text(
-                    bookingslistItemModelObj.timeText!,
-                    style: theme.textTheme.bodyLarge,
+                  child: Obx(
+                    () => Text(
+                      bookingslistItemModelObj.timeText!.value,
+                      style: theme.textTheme.bodyLarge,
+                    ),
                   ),
                 ),
                 Spacer(),
-                Text(
-                  bookingslistItemModelObj.durationText!,
-                  style: theme.textTheme.bodyLarge,
+                Obx(
+                  () => Text(
+                    bookingslistItemModelObj.durationText!.value,
+                    style: theme.textTheme.bodyLarge,
+                  ),
                 )
               ],
             ),
@@ -104,9 +117,11 @@ class BookingslistItemWidget extends StatelessWidget {
                   ),
                   Padding(
                     padding: EdgeInsets.only(left: 12.h),
-                    child: Text(
-                      bookingslistItemModelObj.dateText!,
-                      style: theme.textTheme.bodyLarge,
+                    child: Obx(
+                      () => Text(
+                        bookingslistItemModelObj.dateText!.value,
+                        style: theme.textTheme.bodyLarge,
+                      ),
                     ),
                   )
                 ],

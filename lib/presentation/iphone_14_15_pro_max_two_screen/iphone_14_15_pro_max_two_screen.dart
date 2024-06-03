@@ -4,26 +4,16 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../core/app_export.dart';
 import '../../theme/custom_button_style.dart';
 import '../../widgets/custom_elevated_button.dart';
-import 'bloc/iphone_14_15_pro_max_two_bloc.dart';
+import 'controller/iphone_14_15_pro_max_two_controller.dart';
 import 'models/imageslider_item_model.dart';
-import 'models/iphone_14_15_pro_max_two_model.dart';
-import 'widgets/imageslider_item_widget.dart';
+import 'widgets/imageslider_item_widget.dart'; // ignore_for_file: must_be_immutable
 
-class Iphone1415ProMaxTwoScreen extends StatelessWidget {
+class Iphone1415ProMaxTwoScreen
+    extends GetWidget<Iphone1415ProMaxTwoController> {
   const Iphone1415ProMaxTwoScreen({Key? key})
       : super(
           key: key,
         );
-
-  static Widget builder(BuildContext context) {
-    return BlocProvider<Iphone1415ProMaxTwoBloc>(
-      create: (context) => Iphone1415ProMaxTwoBloc(Iphone1415ProMaxTwoState(
-        iphone1415ProMaxTwoModelObj: Iphone1415ProMaxTwoModel(),
-      ))
-        ..add(Iphone1415ProMaxTwoInitialEvent()),
-      child: Iphone1415ProMaxTwoScreen(),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +41,7 @@ class Iphone1415ProMaxTwoScreen extends StatelessWidget {
                   child: Stack(
                     alignment: Alignment.topRight,
                     children: [
-                      _buildImageSlider(context),
+                      _buildImageSlider(),
                       CustomElevatedButton(
                         height: 35.v,
                         width: 67.h,
@@ -115,7 +105,7 @@ class Iphone1415ProMaxTwoScreen extends StatelessWidget {
                   margin: EdgeInsets.symmetric(horizontal: 33.h),
                   buttonStyle: CustomButtonStyles.fillPrimary,
                   onPressed: () {
-                    onTapContinue(context);
+                    onTapContinue();
                   },
                   alignment: Alignment.center,
                 ),
@@ -129,40 +119,36 @@ class Iphone1415ProMaxTwoScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildImageSlider(BuildContext context) {
-    return BlocBuilder<Iphone1415ProMaxTwoBloc, Iphone1415ProMaxTwoState>(
-      builder: (context, state) {
-        return CarouselSlider.builder(
-          options: CarouselOptions(
-            height: 496.v,
-            initialPage: 0,
-            autoPlay: true,
-            viewportFraction: 1.0,
-            enableInfiniteScroll: false,
-            scrollDirection: Axis.horizontal,
-            onPageChanged: (index, reason) {
-              state.sliderIndex = index;
-            },
-          ),
-          itemCount:
-              state.iphone1415ProMaxTwoModelObj?.imagesliderItemList.length ??
-                  0,
-          itemBuilder: (context, index, realIndex) {
-            ImagesliderItemModel model =
-                state.iphone1415ProMaxTwoModelObj?.imagesliderItemList[index] ??
-                    ImagesliderItemModel();
-            return ImagesliderItemWidget(
-              model,
-            );
+  Widget _buildImageSlider() {
+    return Obx(
+      () => CarouselSlider.builder(
+        options: CarouselOptions(
+          height: 496.v,
+          initialPage: 0,
+          autoPlay: true,
+          viewportFraction: 1.0,
+          enableInfiniteScroll: false,
+          scrollDirection: Axis.horizontal,
+          onPageChanged: (index, reason) {
+            controller.sliderIndex.value = index;
           },
-        );
-      },
+        ),
+        itemCount: controller
+            .iphone1415ProMaxTwoModelObj.value.imagesliderItemList.value.length,
+        itemBuilder: (context, index, realIndex) {
+          ImagesliderItemModel model = controller.iphone1415ProMaxTwoModelObj
+              .value.imagesliderItemList.value[index];
+          return ImagesliderItemWidget(
+            model,
+          );
+        },
+      ),
     );
   }
 
   /// Navigates to the iphone1415ProMaxThreeScreen when the action is triggered.
-  onTapContinue(BuildContext context) {
-    NavigatorService.pushNamed(
+  onTapContinue() {
+    Get.toNamed(
       AppRoutes.iphone1415ProMaxThreeScreen,
     );
   }

@@ -2,24 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import '../../core/app_export.dart';
 import '../../widgets/custom_icon_button.dart';
-import 'bloc/calendar_three_bloc.dart';
-import 'models/calendar_three_model.dart';
+import 'controller/calendar_three_controller.dart'; // ignore_for_file: must_be_immutable
 
-class CalendarThreeScreen extends StatelessWidget {
+class CalendarThreeScreen extends GetWidget<CalendarThreeController> {
   const CalendarThreeScreen({Key? key})
       : super(
           key: key,
         );
-
-  static Widget builder(BuildContext context) {
-    return BlocProvider<CalendarThreeBloc>(
-      create: (context) => CalendarThreeBloc(CalendarThreeState(
-        calendarThreeModelObj: CalendarThreeModel(),
-      ))
-        ..add(CalendarThreeInitialEvent()),
-      child: CalendarThreeScreen(),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,13 +20,13 @@ class CalendarThreeScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 18.v),
           child: Column(
             children: [
-              _buildCalendarRow(context),
+              _buildCalendarRow(),
               SizedBox(height: 18.v),
               Divider(
                 color: appTheme.black900.withOpacity(0.12),
               ),
               SizedBox(height: 17.v),
-              _buildMainCalendar(context),
+              _buildMainCalendar(),
               SizedBox(height: 5.v)
             ],
           ),
@@ -47,7 +36,7 @@ class CalendarThreeScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildCalendarRow(BuildContext context) {
+  Widget _buildCalendarRow() {
     return Padding(
       padding: EdgeInsets.only(
         left: 28.h,
@@ -73,37 +62,35 @@ class CalendarThreeScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildMainCalendar(BuildContext context) {
-    return BlocBuilder<CalendarThreeBloc, CalendarThreeState>(
-      builder: (context, state) {
-        return SizedBox(
-          height: 349.v,
-          width: 378.h,
-          child: CalendarDatePicker2(
-            config: CalendarDatePicker2Config(
-              calendarType: CalendarDatePicker2Type.single,
-              firstDate: DateTime(DateTime.now().year - 5),
-              lastDate: DateTime(DateTime.now().year + 5),
-              firstDayOfWeek: 1,
-              weekdayLabelTextStyle: TextStyle(
-                color: appTheme.black900,
-                fontFamily: 'GT Walsheim Pro',
-                fontWeight: FontWeight.w500,
-              ),
-              dayTextStyle: TextStyle(
-                color: appTheme.black900.withOpacity(0.8),
-                fontFamily: 'GT Walsheim Pro',
-                fontWeight: FontWeight.w400,
-              ),
-              weekdayLabels: ["Sa", "Mo", "Tu", "Tu", "We", "Th", "Fr"],
+  Widget _buildMainCalendar() {
+    return Obx(
+      () => SizedBox(
+        height: 349.v,
+        width: 378.h,
+        child: CalendarDatePicker2(
+          config: CalendarDatePicker2Config(
+            calendarType: CalendarDatePicker2Type.single,
+            firstDate: DateTime(DateTime.now().year - 5),
+            lastDate: DateTime(DateTime.now().year + 5),
+            firstDayOfWeek: 1,
+            weekdayLabelTextStyle: TextStyle(
+              color: appTheme.black900,
+              fontFamily: 'GT Walsheim Pro',
+              fontWeight: FontWeight.w500,
             ),
-            value: state.selectedDatesFromCalendar ?? [],
-            onValueChanged: (dates) {
-              state.selectedDatesFromCalendar = dates;
-            },
+            dayTextStyle: TextStyle(
+              color: appTheme.black900.withOpacity(0.8),
+              fontFamily: 'GT Walsheim Pro',
+              fontWeight: FontWeight.w400,
+            ),
+            weekdayLabels: ["Sa", "Mo", "Tu", "Tu", "We", "Th", "Fr"],
           ),
-        );
-      },
+          value: controller.selectedDatesFromCalendar.value,
+          onValueChanged: (dates) {
+            controller.selectedDatesFromCalendar.value = dates;
+          },
+        ),
+      ),
     );
   }
 }

@@ -11,30 +11,18 @@ import '../../widgets/custom_text_form_field.dart';
 import '../iphone_14_15_pro_max_nine_tab_container_page/iphone_14_15_pro_max_nine_tab_container_page.dart';
 import '../iphone_14_15_pro_max_seven_page/iphone_14_15_pro_max_seven_page.dart';
 import '../iphone_14_15_pro_max_sixteen_page/iphone_14_15_pro_max_sixteen_page.dart';
-import 'bloc/iphone_14_15_pro_max_twenty_bloc.dart';
-import 'models/iphone_14_15_pro_max_twenty_model.dart'; // ignore_for_file: must_be_immutable
+import 'controller/iphone_14_15_pro_max_twenty_controller.dart'; // ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable
 
 // ignore_for_file: must_be_immutable
-class Iphone1415ProMaxTwentyScreen extends StatelessWidget {
+class Iphone1415ProMaxTwentyScreen
+    extends GetWidget<Iphone1415ProMaxTwentyController> {
   Iphone1415ProMaxTwentyScreen({Key? key})
       : super(
           key: key,
         );
 
-  GlobalKey<NavigatorState> navigatorKey = GlobalKey();
-
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  static Widget builder(BuildContext context) {
-    return BlocProvider<Iphone1415ProMaxTwentyBloc>(
-      create: (context) =>
-          Iphone1415ProMaxTwentyBloc(Iphone1415ProMaxTwentyState(
-        iphone1415ProMaxTwentyModelObj: Iphone1415ProMaxTwentyModel(),
-      ))
-            ..add(Iphone1415ProMaxTwentyInitialEvent()),
-      child: Iphone1415ProMaxTwentyScreen(),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,10 +31,14 @@ class Iphone1415ProMaxTwentyScreen extends StatelessWidget {
         extendBody: true,
         extendBodyBehindAppBar: true,
         resizeToAvoidBottomInset: false,
-        appBar: _buildAppBar(context),
+        appBar: _buildAppBar(),
         body: Container(
           width: SizeUtils.width,
           height: SizeUtils.height,
+          padding: EdgeInsets.only(
+            top: 52.v,
+            bottom: 79.v,
+          ),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment(0.86, 1.06),
@@ -78,28 +70,22 @@ class Iphone1415ProMaxTwentyScreen extends StatelessWidget {
                     SizedBox(height: 9.v),
                     Padding(
                       padding: EdgeInsets.only(left: 8.h),
-                      child: BlocSelector<Iphone1415ProMaxTwentyBloc,
-                          Iphone1415ProMaxTwentyState, TextEditingController?>(
-                        selector: (state) => state.passwordController,
-                        builder: (context, passwordController) {
-                          return CustomTextFormField(
-                            controller: passwordController,
-                            hintText: "msg_enter_current_password".tr,
-                            textInputType: TextInputType.visiblePassword,
-                            validator: (value) {
-                              if (value == null ||
-                                  (!isValidPassword(value, isRequired: true))) {
-                                return "err_msg_please_enter_valid_password".tr;
-                              }
-                              return null;
-                            },
-                            obscureText: true,
-                          );
+                      child: CustomTextFormField(
+                        controller: controller.passwordController,
+                        hintText: "msg_enter_current_password".tr,
+                        textInputType: TextInputType.visiblePassword,
+                        validator: (value) {
+                          if (value == null ||
+                              (!isValidPassword(value, isRequired: true))) {
+                            return "err_msg_please_enter_valid_password".tr;
+                          }
+                          return null;
                         },
+                        obscureText: true,
                       ),
                     ),
                     SizedBox(height: 34.v),
-                    _buildNewPasswordSection(context),
+                    _buildNewPasswordSection(),
                     SizedBox(height: 34.v),
                     Padding(
                       padding: EdgeInsets.only(left: 8.h),
@@ -111,25 +97,19 @@ class Iphone1415ProMaxTwentyScreen extends StatelessWidget {
                     SizedBox(height: 8.v),
                     Padding(
                       padding: EdgeInsets.only(left: 8.h),
-                      child: BlocSelector<Iphone1415ProMaxTwentyBloc,
-                          Iphone1415ProMaxTwentyState, TextEditingController?>(
-                        selector: (state) => state.newpassword1Controller,
-                        builder: (context, newpassword1Controller) {
-                          return CustomTextFormField(
-                            controller: newpassword1Controller,
-                            hintText: "msg_enter_confirm_password".tr,
-                            textInputAction: TextInputAction.done,
-                            textInputType: TextInputType.visiblePassword,
-                            validator: (value) {
-                              if (value == null ||
-                                  (!isValidPassword(value, isRequired: true))) {
-                                return "err_msg_please_enter_valid_password".tr;
-                              }
-                              return null;
-                            },
-                            obscureText: true,
-                          );
+                      child: CustomTextFormField(
+                        controller: controller.newpassword1Controller,
+                        hintText: "msg_enter_confirm_password".tr,
+                        textInputAction: TextInputAction.done,
+                        textInputType: TextInputType.visiblePassword,
+                        validator: (value) {
+                          if (value == null ||
+                              (!isValidPassword(value, isRequired: true))) {
+                            return "err_msg_please_enter_valid_password".tr;
+                          }
+                          return null;
                         },
+                        obscureText: true,
                       ),
                     ),
                     SizedBox(height: 41.v),
@@ -141,7 +121,7 @@ class Iphone1415ProMaxTwentyScreen extends StatelessWidget {
                       ),
                       buttonStyle: CustomButtonStyles.fillPrimary,
                       onPressed: () {
-                        onTapConfirm(context);
+                        onTapConfirm();
                       },
                     ),
                     SizedBox(height: 5.v)
@@ -151,13 +131,13 @@ class Iphone1415ProMaxTwentyScreen extends StatelessWidget {
             ),
           ),
         ),
-        bottomNavigationBar: _buildBottomBar(context),
+        bottomNavigationBar: _buildBottomBar(),
       ),
     );
   }
 
   /// Section Widget
-  PreferredSizeWidget _buildAppBar(BuildContext context) {
+  PreferredSizeWidget _buildAppBar() {
     return CustomAppBar(
       height: 52.v,
       leadingWidth: 55.h,
@@ -177,7 +157,7 @@ class Iphone1415ProMaxTwentyScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildNewPasswordSection(BuildContext context) {
+  Widget _buildNewPasswordSection() {
     return Padding(
       padding: EdgeInsets.only(left: 5.h),
       child: Column(
@@ -193,24 +173,18 @@ class Iphone1415ProMaxTwentyScreen extends StatelessWidget {
           SizedBox(height: 8.v),
           Padding(
             padding: EdgeInsets.only(left: 3.h),
-            child: BlocSelector<Iphone1415ProMaxTwentyBloc,
-                Iphone1415ProMaxTwentyState, TextEditingController?>(
-              selector: (state) => state.newpasswordController,
-              builder: (context, newpasswordController) {
-                return CustomTextFormField(
-                  controller: newpasswordController,
-                  hintText: "lbl_enter_password".tr,
-                  textInputType: TextInputType.visiblePassword,
-                  validator: (value) {
-                    if (value == null ||
-                        (!isValidPassword(value, isRequired: true))) {
-                      return "err_msg_please_enter_valid_password".tr;
-                    }
-                    return null;
-                  },
-                  obscureText: true,
-                );
+            child: CustomTextFormField(
+              controller: controller.newpasswordController,
+              hintText: "lbl_enter_password".tr,
+              textInputType: TextInputType.visiblePassword,
+              validator: (value) {
+                if (value == null ||
+                    (!isValidPassword(value, isRequired: true))) {
+                  return "err_msg_please_enter_valid_password".tr;
+                }
+                return null;
               },
+              obscureText: true,
             ),
           )
         ],
@@ -219,11 +193,10 @@ class Iphone1415ProMaxTwentyScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildBottomBar(BuildContext context) {
+  Widget _buildBottomBar() {
     return CustomBottomBar(
       onChanged: (BottomBarEnum type) {
-        Navigator.pushNamed(
-            navigatorKey.currentContext!, getCurrentRoute(type));
+        Get.toNamed(getCurrentRoute(type), id: 1);
       },
     );
   }
@@ -247,25 +220,22 @@ class Iphone1415ProMaxTwentyScreen extends StatelessWidget {
   }
 
   ///Handling page based on route
-  Widget getCurrentPage(
-    BuildContext context,
-    String currentRoute,
-  ) {
+  Widget getCurrentPage(String currentRoute) {
     switch (currentRoute) {
       case AppRoutes.iphone1415ProMaxSevenPage:
-        return Iphone1415ProMaxSevenPage.builder(context);
+        return Iphone1415ProMaxSevenPage();
       case AppRoutes.iphone1415ProMaxNineTabContainerPage:
-        return Iphone1415ProMaxNineTabContainerPage.builder(context);
+        return Iphone1415ProMaxNineTabContainerPage();
       case AppRoutes.iphone1415ProMaxSixteenPage:
-        return Iphone1415ProMaxSixteenPage.builder(context);
+        return Iphone1415ProMaxSixteenPage();
       default:
         return DefaultWidget();
     }
   }
 
   /// Navigates to the iphone1415ProMaxEightScreen when the action is triggered.
-  onTapConfirm(BuildContext context) {
-    NavigatorService.pushNamed(
+  onTapConfirm() {
+    Get.toNamed(
       AppRoutes.iphone1415ProMaxEightScreen,
     );
   }

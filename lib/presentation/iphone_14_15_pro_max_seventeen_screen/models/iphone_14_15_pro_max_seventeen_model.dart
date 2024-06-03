@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import '../../../core/app_export.dart';
 import 'bookingdetails_item_model.dart';
 
@@ -7,19 +6,19 @@ import 'bookingdetails_item_model.dart';
 // ignore_for_file: must_be_immutable
 
 // ignore_for_file: must_be_immutable
-class Iphone1415ProMaxSeventeenModel extends Equatable {
-  Iphone1415ProMaxSeventeenModel({this.bookingdetailsItemList = const []});
-
-  List<BookingdetailsItemModel> bookingdetailsItemList;
-
-  Iphone1415ProMaxSeventeenModel copyWith(
-      {List<BookingdetailsItemModel>? bookingdetailsItemList}) {
-    return Iphone1415ProMaxSeventeenModel(
-      bookingdetailsItemList:
-          bookingdetailsItemList ?? this.bookingdetailsItemList,
-    );
-  }
-
-  @override
-  List<Object?> get props => [bookingdetailsItemList];
+class Iphone1415ProMaxSeventeenModel {
+  Rx<List<BookingdetailsItemModel>> bookingdetailsItemList = Rx([
+    BookingdetailsItemModel(
+        tableName: "Table tennis | Court 1".obs,
+        tablePrice: "\$30".obs,
+        timeSlot: "10:00 am - 11:00 am".obs,
+        duration: "1hr".obs,
+        date: "21-Mar-2024".obs),
+    BookingdetailsItemModel(
+        tableName: "Table tennis | Court 1".obs,
+        tablePrice: "\$60".obs,
+        timeSlot: "03:00 pm - 05:00 pm".obs,
+        duration: "2hr".obs,
+        date: "17-Mar-2024".obs)
+  ]);
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/app_export.dart';
+import '../controller/iphone_14_15_pro_max_four_controller.dart';
 import '../models/imageslider2_item_model.dart'; // ignore: must_be_immutable
 // ignore_for_file: must_be_immutable
 
@@ -11,6 +12,8 @@ class Imageslider2ItemWidget extends StatelessWidget {
         );
 
   Imageslider2ItemModel imageslider2ItemModelObj;
+
+  var controller = Get.find<Iphone1415ProMaxFourController>();
 
   @override
   Widget build(BuildContext context) {

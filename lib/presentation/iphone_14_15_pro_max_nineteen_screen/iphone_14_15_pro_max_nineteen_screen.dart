@@ -8,28 +8,14 @@ import '../../widgets/custom_text_form_field.dart';
 import '../iphone_14_15_pro_max_nine_tab_container_page/iphone_14_15_pro_max_nine_tab_container_page.dart';
 import '../iphone_14_15_pro_max_seven_page/iphone_14_15_pro_max_seven_page.dart';
 import '../iphone_14_15_pro_max_sixteen_page/iphone_14_15_pro_max_sixteen_page.dart';
-import 'bloc/iphone_14_15_pro_max_nineteen_bloc.dart';
-import 'models/iphone_14_15_pro_max_nineteen_model.dart'; // ignore_for_file: must_be_immutable
+import 'controller/iphone_14_15_pro_max_nineteen_controller.dart'; // ignore_for_file: must_be_immutable
 
-// ignore_for_file: must_be_immutable
-class Iphone1415ProMaxNineteenScreen extends StatelessWidget {
-  Iphone1415ProMaxNineteenScreen({Key? key})
+class Iphone1415ProMaxNineteenScreen
+    extends GetWidget<Iphone1415ProMaxNineteenController> {
+  const Iphone1415ProMaxNineteenScreen({Key? key})
       : super(
           key: key,
         );
-
-  GlobalKey<NavigatorState> navigatorKey = GlobalKey();
-
-  static Widget builder(BuildContext context) {
-    return BlocProvider<Iphone1415ProMaxNineteenBloc>(
-      create: (context) =>
-          Iphone1415ProMaxNineteenBloc(Iphone1415ProMaxNineteenState(
-        iphone1415ProMaxNineteenModelObj: Iphone1415ProMaxNineteenModel(),
-      ))
-            ..add(Iphone1415ProMaxNineteenInitialEvent()),
-      child: Iphone1415ProMaxNineteenScreen(),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +24,14 @@ class Iphone1415ProMaxNineteenScreen extends StatelessWidget {
         extendBody: true,
         extendBodyBehindAppBar: true,
         resizeToAvoidBottomInset: false,
-        appBar: _buildAppBar(context),
+        appBar: _buildAppBar(),
         body: Container(
           width: SizeUtils.width,
           height: SizeUtils.height,
+          padding: EdgeInsets.only(
+            top: 47.v,
+            bottom: 80.v,
+          ),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment(0.86, 1.06),
@@ -88,27 +78,20 @@ class Iphone1415ProMaxNineteenScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 37.v),
-                BlocSelector<Iphone1415ProMaxNineteenBloc,
-                    Iphone1415ProMaxNineteenState, TextEditingController?>(
-                  selector: (state) => state.johndoevalueController,
-                  builder: (context, johndoevalueController) {
-                    return CustomTextFormField(
-                      controller: johndoevalueController,
-                      hintText: "lbl_john_doe".tr,
-                      hintStyle: theme.textTheme.titleMedium!,
-                      textInputAction: TextInputAction.done,
-                      contentPadding: EdgeInsets.symmetric(vertical: 1.v),
-                      borderDecoration:
-                          TextFormFieldStyleHelper.underLineOnPrimaryContainer,
-                      filled: false,
-                    );
-                  },
+                CustomTextFormField(
+                  controller: controller.johndoevalueController,
+                  hintText: "lbl_john_doe".tr,
+                  hintStyle: theme.textTheme.titleMedium!,
+                  textInputAction: TextInputAction.done,
+                  contentPadding: EdgeInsets.symmetric(vertical: 1.v),
+                  borderDecoration:
+                      TextFormFieldStyleHelper.underLineOnPrimaryContainer,
+                  filled: false,
                 ),
                 SizedBox(height: 24.v),
                 Padding(
                   padding: EdgeInsets.only(right: 3.h),
                   child: _buildEmailSection(
-                    context,
                     emailid: "lbl_phone_number".tr,
                     email: "lbl_555_123_4567".tr,
                   ),
@@ -119,7 +102,6 @@ class Iphone1415ProMaxNineteenScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(right: 3.h),
                   child: _buildEmailSection(
-                    context,
                     emailid: "lbl_email_id".tr,
                     email: "msg_john_doe_example_com".tr,
                   ),
@@ -130,7 +112,6 @@ class Iphone1415ProMaxNineteenScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(right: 3.h),
                   child: _buildEmailSection(
-                    context,
                     emailid: "lbl_gender".tr,
                     email: "lbl_male".tr,
                   ),
@@ -149,7 +130,6 @@ class Iphone1415ProMaxNineteenScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(right: 3.h),
                   child: _buildEmailSection(
-                    context,
                     emailid: "lbl_street_name".tr,
                     email: "lbl_1234_elm_street".tr,
                   ),
@@ -160,7 +140,6 @@ class Iphone1415ProMaxNineteenScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(right: 3.h),
                   child: _buildEmailSection(
-                    context,
                     emailid: "lbl_city".tr,
                     email: "lbl_anytown".tr,
                   ),
@@ -171,7 +150,6 @@ class Iphone1415ProMaxNineteenScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(right: 3.h),
                   child: _buildEmailSection(
-                    context,
                     emailid: "msg_state_province".tr,
                     email: "lbl_any_state".tr,
                   ),
@@ -182,13 +160,13 @@ class Iphone1415ProMaxNineteenScreen extends StatelessWidget {
             ),
           ),
         ),
-        bottomNavigationBar: _buildBottomBar(context),
+        bottomNavigationBar: _buildBottomBar(),
       ),
     );
   }
 
   /// Section Widget
-  PreferredSizeWidget _buildAppBar(BuildContext context) {
+  PreferredSizeWidget _buildAppBar() {
     return CustomAppBar(
       height: 47.v,
       leadingWidth: 55.h,
@@ -208,18 +186,16 @@ class Iphone1415ProMaxNineteenScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildBottomBar(BuildContext context) {
+  Widget _buildBottomBar() {
     return CustomBottomBar(
       onChanged: (BottomBarEnum type) {
-        Navigator.pushNamed(
-            navigatorKey.currentContext!, getCurrentRoute(type));
+        Get.toNamed(getCurrentRoute(type), id: 1);
       },
     );
   }
 
   /// Common widget
-  Widget _buildEmailSection(
-    BuildContext context, {
+  Widget _buildEmailSection({
     required String emailid,
     required String email,
   }) {
@@ -264,17 +240,14 @@ class Iphone1415ProMaxNineteenScreen extends StatelessWidget {
   }
 
   ///Handling page based on route
-  Widget getCurrentPage(
-    BuildContext context,
-    String currentRoute,
-  ) {
+  Widget getCurrentPage(String currentRoute) {
     switch (currentRoute) {
       case AppRoutes.iphone1415ProMaxSevenPage:
-        return Iphone1415ProMaxSevenPage.builder(context);
+        return Iphone1415ProMaxSevenPage();
       case AppRoutes.iphone1415ProMaxNineTabContainerPage:
-        return Iphone1415ProMaxNineTabContainerPage.builder(context);
+        return Iphone1415ProMaxNineTabContainerPage();
       case AppRoutes.iphone1415ProMaxSixteenPage:
-        return Iphone1415ProMaxSixteenPage.builder(context);
+        return Iphone1415ProMaxSixteenPage();
       default:
         return DefaultWidget();
     }

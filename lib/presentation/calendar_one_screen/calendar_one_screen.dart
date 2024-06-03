@@ -6,32 +6,21 @@ import '../../widgets/app_bar/appbar_title_iconbutton.dart';
 import '../../widgets/app_bar/custom_app_bar.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_text_form_field.dart';
-import 'bloc/calendar_one_bloc.dart';
-import 'models/calendar_one_model.dart';
+import 'controller/calendar_one_controller.dart'; // ignore_for_file: must_be_immutable
 
-class CalendarOneScreen extends StatelessWidget {
+class CalendarOneScreen extends GetWidget<CalendarOneController> {
   const CalendarOneScreen({Key? key})
       : super(
           key: key,
         );
 
-  static Widget builder(BuildContext context) {
-    return BlocProvider<CalendarOneBloc>(
-      create: (context) => CalendarOneBloc(CalendarOneState(
-        calendarOneModelObj: CalendarOneModel(),
-      ))
-        ..add(CalendarOneInitialEvent()),
-      child: CalendarOneScreen(),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: theme.colorScheme.onPrimaryContainer.withOpacity(1),
         resizeToAvoidBottomInset: false,
-        appBar: _buildAppBar(context),
+        backgroundColor: theme.colorScheme.onPrimaryContainer.withOpacity(1),
+        appBar: _buildAppBar(),
         body: Container(
           width: double.maxFinite,
           padding: EdgeInsets.symmetric(
@@ -40,7 +29,7 @@ class CalendarOneScreen extends StatelessWidget {
           ),
           child: Column(
             children: [
-              _buildCalendarDetails(context),
+              _buildCalendarDetails(),
               SizedBox(height: 38.v),
               Align(
                 alignment: Alignment.centerLeft,
@@ -53,59 +42,47 @@ class CalendarOneScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20.v),
-              BlocSelector<CalendarOneBloc, CalendarOneState,
-                  TextEditingController?>(
-                selector: (state) => state.cardtypeoneController,
-                builder: (context, cardtypeoneController) {
-                  return CustomTextFormField(
-                    controller: cardtypeoneController,
-                    hintText: "msg_debit_credit_card".tr,
-                    prefix: Container(
-                      margin: EdgeInsets.fromLTRB(24.h, 17.v, 10.h, 17.v),
-                      child: CustomImageView(
-                        imagePath: ImageConstant.imgUser,
-                        height: 18.v,
-                        width: 30.h,
-                      ),
-                    ),
-                    prefixConstraints: BoxConstraints(
-                      maxHeight: 53.v,
-                    ),
-                    contentPadding: EdgeInsets.only(
-                      top: 16.v,
-                      right: 30.h,
-                      bottom: 16.v,
-                    ),
-                  );
-                },
+              CustomTextFormField(
+                controller: controller.cardtypeoneController,
+                hintText: "msg_debit_credit_card".tr,
+                prefix: Container(
+                  margin: EdgeInsets.fromLTRB(24.h, 17.v, 10.h, 17.v),
+                  child: CustomImageView(
+                    imagePath: ImageConstant.imgUser,
+                    height: 18.v,
+                    width: 30.h,
+                  ),
+                ),
+                prefixConstraints: BoxConstraints(
+                  maxHeight: 53.v,
+                ),
+                contentPadding: EdgeInsets.only(
+                  top: 16.v,
+                  right: 30.h,
+                  bottom: 16.v,
+                ),
               ),
               SizedBox(height: 17.v),
-              BlocSelector<CalendarOneBloc, CalendarOneState,
-                  TextEditingController?>(
-                selector: (state) => state.paymentapponeController,
-                builder: (context, paymentapponeController) {
-                  return CustomTextFormField(
-                    controller: paymentapponeController,
-                    hintText: "lbl_apple_pay".tr,
-                    textInputAction: TextInputAction.done,
-                    prefix: Container(
-                      margin: EdgeInsets.fromLTRB(24.h, 14.v, 10.h, 14.v),
-                      child: CustomImageView(
-                        imagePath: ImageConstant.imgVector,
-                        height: 24.v,
-                        width: 19.h,
-                      ),
-                    ),
-                    prefixConstraints: BoxConstraints(
-                      maxHeight: 53.v,
-                    ),
-                    contentPadding: EdgeInsets.only(
-                      top: 16.v,
-                      right: 30.h,
-                      bottom: 16.v,
-                    ),
-                  );
-                },
+              CustomTextFormField(
+                controller: controller.paymentapponeController,
+                hintText: "lbl_apple_pay".tr,
+                textInputAction: TextInputAction.done,
+                prefix: Container(
+                  margin: EdgeInsets.fromLTRB(24.h, 14.v, 10.h, 14.v),
+                  child: CustomImageView(
+                    imagePath: ImageConstant.imgVector,
+                    height: 24.v,
+                    width: 19.h,
+                  ),
+                ),
+                prefixConstraints: BoxConstraints(
+                  maxHeight: 53.v,
+                ),
+                contentPadding: EdgeInsets.only(
+                  top: 16.v,
+                  right: 30.h,
+                  bottom: 16.v,
+                ),
               ),
               Spacer(),
               CustomElevatedButton(
@@ -118,13 +95,13 @@ class CalendarOneScreen extends StatelessWidget {
                 buttonTextStyle:
                     CustomTextStyles.titleLargeOnPrimaryContainer_1,
                 onPressed: () {
-                  onTapPayment(context);
+                  onTapPayment();
                 },
               ),
               SizedBox(height: 21.v),
               GestureDetector(
                 onTap: () {
-                  onTapTxtBack(context);
+                  onTapTxtBack();
                 },
                 child: Text(
                   "lbl_back".tr,
@@ -140,7 +117,7 @@ class CalendarOneScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  PreferredSizeWidget _buildAppBar(BuildContext context) {
+  PreferredSizeWidget _buildAppBar() {
     return CustomAppBar(
       centerTitle: true,
       title: Column(
@@ -180,7 +157,7 @@ class CalendarOneScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildCalendarDetails(BuildContext context) {
+  Widget _buildCalendarDetails() {
     return Container(
       margin: EdgeInsets.only(left: 3.h),
       padding: EdgeInsets.symmetric(vertical: 14.v),
@@ -201,7 +178,7 @@ class CalendarOneScreen extends StatelessWidget {
                   height: 21.adaptSize,
                   width: 21.adaptSize,
                   onTap: () {
-                    onTapImgCalendarone(context);
+                    onTapImgCalendarone();
                   },
                 ),
                 Padding(
@@ -284,22 +261,22 @@ class CalendarOneScreen extends StatelessWidget {
   }
 
   /// Navigates to the calendarThreeScreen when the action is triggered.
-  onTapImgCalendarone(BuildContext context) {
-    NavigatorService.pushNamed(
+  onTapImgCalendarone() {
+    Get.toNamed(
       AppRoutes.calendarThreeScreen,
     );
   }
 
   /// Navigates to the calendarTwoScreen when the action is triggered.
-  onTapPayment(BuildContext context) {
-    NavigatorService.pushNamed(
+  onTapPayment() {
+    Get.toNamed(
       AppRoutes.calendarTwoScreen,
     );
   }
 
   /// Navigates to the calendarScreen when the action is triggered.
-  onTapTxtBack(BuildContext context) {
-    NavigatorService.pushNamed(
+  onTapTxtBack() {
+    Get.toNamed(
       AppRoutes.calendarScreen,
     );
   }

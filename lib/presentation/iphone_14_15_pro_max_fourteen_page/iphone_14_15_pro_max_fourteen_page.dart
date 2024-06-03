@@ -2,35 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import '../../core/app_export.dart';
 import '../../widgets/custom_elevated_button.dart';
-import 'bloc/iphone_14_15_pro_max_fourteen_bloc.dart';
+import 'controller/iphone_14_15_pro_max_fourteen_controller.dart';
 import 'models/iphone_14_15_pro_max_fourteen_model.dart'; // ignore_for_file: must_be_immutable
 
-class Iphone1415ProMaxFourteenPage extends StatefulWidget {
-  const Iphone1415ProMaxFourteenPage({Key? key})
+// ignore_for_file: must_be_immutable
+class Iphone1415ProMaxFourteenPage extends StatelessWidget {
+  Iphone1415ProMaxFourteenPage({Key? key})
       : super(
           key: key,
         );
 
-  @override
-  Iphone1415ProMaxFourteenPageState createState() =>
-      Iphone1415ProMaxFourteenPageState();
-  static Widget builder(BuildContext context) {
-    return BlocProvider<Iphone1415ProMaxFourteenBloc>(
-      create: (context) =>
-          Iphone1415ProMaxFourteenBloc(Iphone1415ProMaxFourteenState(
-        iphone1415ProMaxFourteenModelObj: Iphone1415ProMaxFourteenModel(),
-      ))
-            ..add(Iphone1415ProMaxFourteenInitialEvent()),
-      child: Iphone1415ProMaxFourteenPage(),
-    );
-  }
-}
+  Iphone1415ProMaxFourteenController controller = Get.put(
+      Iphone1415ProMaxFourteenController(Iphone1415ProMaxFourteenModel().obs));
 
-class Iphone1415ProMaxFourteenPageState
-    extends State<Iphone1415ProMaxFourteenPage>
-    with AutomaticKeepAliveClientMixin<Iphone1415ProMaxFourteenPage> {
-  @override
-  bool get wantKeepAlive => true;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -65,9 +49,9 @@ class Iphone1415ProMaxFourteenPageState
                             .withOpacity(0.1),
                       ),
                       SizedBox(height: 14.v),
-                      _buildDateRow(context),
+                      _buildDateRow(),
                       SizedBox(height: 19.v),
-                      _buildCalendarSection(context),
+                      _buildCalendarSection(),
                       SizedBox(height: 27.v),
                       Divider(
                         color: theme.colorScheme.onPrimaryContainer
@@ -123,7 +107,7 @@ class Iphone1415ProMaxFourteenPageState
   }
 
   /// Section Widget
-  Widget _buildDateRow(BuildContext context) {
+  Widget _buildDateRow() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -136,7 +120,7 @@ class Iphone1415ProMaxFourteenPageState
         ),
         GestureDetector(
           onTap: () {
-            onTapRowf7sportscour(context);
+            onTapRowf7sportscour();
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -164,60 +148,57 @@ class Iphone1415ProMaxFourteenPageState
   }
 
   /// Section Widget
-  Widget _buildCalendarSection(BuildContext context) {
-    return BlocBuilder<Iphone1415ProMaxFourteenBloc,
-        Iphone1415ProMaxFourteenState>(
-      builder: (context, state) {
-        return SizedBox(
-          height: 75.v,
-          width: 392.h,
-          child: EasyDateTimeLine(
-            initialDate: state.selectedDatesFromCalendar ?? DateTime.now(),
-            locale: 'en_US',
-            headerProps: EasyHeaderProps(
-              selectedDateFormat: SelectedDateFormat.fullDateDMY,
-              monthPickerType: MonthPickerType.switcher,
-              showHeader: false,
-            ),
-            dayProps: EasyDayProps(
-              width: 11.h,
-              height: 11.v,
-            ),
-            onDateChange: (selectedDate) {
-              state.selectedDatesFromCalendar = selectedDate;
-            },
-            itemBuilder:
-                (context, dayNumber, dayName, monthName, fullDate, isSelected) {
-              return isSelected
-                  ? Container(
-                      height: 11.adaptSize,
-                      width: 11.adaptSize,
-                      decoration: BoxDecoration(
-                        color: appTheme.orange700,
-                        borderRadius: BorderRadius.circular(
-                          5.h,
-                        ),
-                      ))
-                  : Container(
-                      height: 11.adaptSize,
-                      width: 11.adaptSize,
-                      decoration: BoxDecoration(
-                        color: appTheme.redA700,
-                        borderRadius: BorderRadius.circular(
-                          5.h,
-                        ),
-                      ),
-                    );
-            },
+  Widget _buildCalendarSection() {
+    return Obx(
+      () => SizedBox(
+        height: 75.v,
+        width: 392.h,
+        child: EasyDateTimeLine(
+          initialDate: controller.selectedDatesFromCalendar.value,
+          locale: 'en_US',
+          headerProps: EasyHeaderProps(
+            selectedDateFormat: SelectedDateFormat.fullDateDMY,
+            monthPickerType: MonthPickerType.switcher,
+            showHeader: false,
           ),
-        );
-      },
+          dayProps: EasyDayProps(
+            width: 11.h,
+            height: 11.v,
+          ),
+          onDateChange: (selectedDate) {
+            controller.selectedDatesFromCalendar.value = selectedDate;
+          },
+          itemBuilder:
+              (context, dayNumber, dayName, monthName, fullDate, isSelected) {
+            return isSelected
+                ? Container(
+                    height: 11.adaptSize,
+                    width: 11.adaptSize,
+                    decoration: BoxDecoration(
+                      color: appTheme.orange700,
+                      borderRadius: BorderRadius.circular(
+                        5.h,
+                      ),
+                    ))
+                : Container(
+                    height: 11.adaptSize,
+                    width: 11.adaptSize,
+                    decoration: BoxDecoration(
+                      color: appTheme.redA700,
+                      borderRadius: BorderRadius.circular(
+                        5.h,
+                      ),
+                    ),
+                  );
+          },
+        ),
+      ),
     );
   }
 
   /// Navigates to the calendarFourScreen when the action is triggered.
-  onTapRowf7sportscour(BuildContext context) {
-    NavigatorService.pushNamed(
+  onTapRowf7sportscour() {
+    Get.toNamed(
       AppRoutes.calendarFourScreen,
     );
   }

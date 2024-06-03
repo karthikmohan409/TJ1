@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import '../../../core/app_export.dart';
 import 'imageslider1_item_model.dart';
 
@@ -7,18 +6,7 @@ import 'imageslider1_item_model.dart';
 // ignore_for_file: must_be_immutable
 
 // ignore_for_file: must_be_immutable
-class Iphone1415ProMaxThreeModel extends Equatable {
-  Iphone1415ProMaxThreeModel({this.imageslider1ItemList = const []});
-
-  List<Imageslider1ItemModel> imageslider1ItemList;
-
-  Iphone1415ProMaxThreeModel copyWith(
-      {List<Imageslider1ItemModel>? imageslider1ItemList}) {
-    return Iphone1415ProMaxThreeModel(
-      imageslider1ItemList: imageslider1ItemList ?? this.imageslider1ItemList,
-    );
-  }
-
-  @override
-  List<Object?> get props => [imageslider1ItemList];
+class Iphone1415ProMaxThreeModel {
+  Rx<List<Imageslider1ItemModel>> imageslider1ItemList =
+      Rx(List.generate(1, (index) => Imageslider1ItemModel()));
 }

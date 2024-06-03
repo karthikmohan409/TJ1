@@ -5,27 +5,18 @@ import '../../theme/custom_button_style.dart';
 import '../../widgets/custom_checkbox_button.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_text_form_field.dart';
-import 'bloc/iphone_14_15_pro_max_five_bloc.dart';
-import 'models/iphone_14_15_pro_max_five_model.dart'; // ignore_for_file: must_be_immutable
+import 'controller/iphone_14_15_pro_max_five_controller.dart'; // ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable
 
 // ignore_for_file: must_be_immutable
-class Iphone1415ProMaxFiveScreen extends StatelessWidget {
+class Iphone1415ProMaxFiveScreen
+    extends GetWidget<Iphone1415ProMaxFiveController> {
   Iphone1415ProMaxFiveScreen({Key? key})
       : super(
           key: key,
         );
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  static Widget builder(BuildContext context) {
-    return BlocProvider<Iphone1415ProMaxFiveBloc>(
-      create: (context) => Iphone1415ProMaxFiveBloc(Iphone1415ProMaxFiveState(
-        iphone1415ProMaxFiveModelObj: Iphone1415ProMaxFiveModel(),
-      ))
-        ..add(Iphone1415ProMaxFiveInitialEvent()),
-      child: Iphone1415ProMaxFiveScreen(),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,82 +73,70 @@ class Iphone1415ProMaxFiveScreen extends StatelessWidget {
                           CustomTextStyles.titleLargeOnPrimaryContainerRegular,
                     ),
                     SizedBox(height: 42.v),
-                    BlocSelector<Iphone1415ProMaxFiveBloc,
-                        Iphone1415ProMaxFiveState, TextEditingController?>(
-                      selector: (state) => state.phoneNumberController,
-                      builder: (context, phoneNumberController) {
-                        return CustomTextFormField(
-                          controller: phoneNumberController,
-                          hintText: "msg_enter_your_phone".tr,
-                          hintStyle:
-                              CustomTextStyles.bodyLargeOnPrimaryContainer_4,
-                          textInputType: TextInputType.phone,
-                          validator: (value) {
-                            if (!isValidPhone(value)) {
-                              return "err_msg_please_enter_valid_phone_number"
-                                  .tr;
-                            }
-                            return null;
-                          },
-                          borderDecoration: TextFormFieldStyleHelper
-                              .outlineOnPrimaryContainerTL7,
-                          filled: false,
-                        );
+                    CustomTextFormField(
+                      controller: controller.phoneNumberController,
+                      hintText: "msg_enter_your_phone".tr,
+                      hintStyle: CustomTextStyles.bodyLargeOnPrimaryContainer_4,
+                      textInputType: TextInputType.phone,
+                      validator: (value) {
+                        if (!isValidPhone(value)) {
+                          return "err_msg_please_enter_valid_phone_number".tr;
+                        }
+                        return null;
                       },
+                      borderDecoration:
+                          TextFormFieldStyleHelper.outlineOnPrimaryContainerTL7,
+                      filled: false,
                     ),
                     SizedBox(height: 25.v),
-                    BlocBuilder<Iphone1415ProMaxFiveBloc,
-                        Iphone1415ProMaxFiveState>(
-                      builder: (context, state) {
-                        return CustomTextFormField(
-                          controller: state.passwordController,
-                          hintText: "lbl_password".tr,
-                          hintStyle:
-                              CustomTextStyles.bodyLargeOnPrimaryContainer_4,
-                          textInputAction: TextInputAction.done,
-                          textInputType: TextInputType.visiblePassword,
-                          suffix: InkWell(
-                            onTap: () {
-                              context.read<Iphone1415ProMaxFiveBloc>().add(
-                                  ChangePasswordVisibilityEvent(
-                                      value: !state.isShowPassword));
-                            },
-                            child: Container(
-                              margin: EdgeInsets.symmetric(
-                                horizontal: 30.h,
-                                vertical: 21.v,
-                              ),
-                              child: CustomImageView(
-                                imagePath: ImageConstant.imgEye,
-                                height: 15.v,
-                                width: 22.h,
-                              ),
+                    Obx(
+                      () => CustomTextFormField(
+                        controller: controller.passwordController,
+                        hintText: "lbl_password".tr,
+                        hintStyle:
+                            CustomTextStyles.bodyLargeOnPrimaryContainer_4,
+                        textInputAction: TextInputAction.done,
+                        textInputType: TextInputType.visiblePassword,
+                        suffix: InkWell(
+                          onTap: () {
+                            controller.isShowPassword.value =
+                                !controller.isShowPassword.value;
+                          },
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                              horizontal: 30.h,
+                              vertical: 21.v,
+                            ),
+                            child: CustomImageView(
+                              imagePath: ImageConstant.imgEye,
+                              height: 15.v,
+                              width: 22.h,
                             ),
                           ),
-                          suffixConstraints: BoxConstraints(
-                            maxHeight: 57.v,
-                          ),
-                          validator: (value) {
-                            if (value == null ||
-                                (!isValidPassword(value, isRequired: true))) {
-                              return "err_msg_please_enter_valid_password".tr;
-                            }
-                            return null;
-                          },
-                          obscureText: state.isShowPassword,
-                          contentPadding: EdgeInsets.only(
-                            left: 30.h,
-                            top: 18.v,
-                            bottom: 18.v,
-                          ),
-                          borderDecoration: TextFormFieldStyleHelper
-                              .outlineOnPrimaryContainerTL7,
-                          filled: false,
-                        );
-                      },
+                        ),
+                        suffixConstraints: BoxConstraints(
+                          maxHeight: 57.v,
+                        ),
+                        validator: (value) {
+                          if (value == null ||
+                              (!isValidPassword(value, isRequired: true))) {
+                            return "err_msg_please_enter_valid_password".tr;
+                          }
+                          return null;
+                        },
+                        obscureText: controller.isShowPassword.value,
+                        contentPadding: EdgeInsets.only(
+                          left: 30.h,
+                          top: 18.v,
+                          bottom: 18.v,
+                        ),
+                        borderDecoration: TextFormFieldStyleHelper
+                            .outlineOnPrimaryContainerTL7,
+                        filled: false,
+                      ),
                     ),
                     SizedBox(height: 30.v),
-                    _buildRememberMeSection(context),
+                    _buildRememberMeSection(),
                     SizedBox(height: 48.v),
                     CustomElevatedButton(
                       text: "lbl_login".tr,
@@ -203,7 +182,7 @@ class Iphone1415ProMaxFiveScreen extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 30.v),
-                    _buildSocialLoginSection(context),
+                    _buildSocialLoginSection(),
                     SizedBox(height: 34.v),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 19.h),
@@ -220,7 +199,7 @@ class Iphone1415ProMaxFiveScreen extends StatelessWidget {
                           ),
                           GestureDetector(
                             onTap: () {
-                              onTapTxtRegisternow(context);
+                              onTapTxtRegisternow();
                             },
                             child: Padding(
                               padding: EdgeInsets.only(left: 10.h),
@@ -236,7 +215,7 @@ class Iphone1415ProMaxFiveScreen extends StatelessWidget {
                     SizedBox(height: 30.v),
                     GestureDetector(
                       onTap: () {
-                        onTapTxtRegisterlater(context);
+                        onTapTxtRegisterlater();
                       },
                       child: Text(
                         "lbl_register_later".tr,
@@ -254,25 +233,19 @@ class Iphone1415ProMaxFiveScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildRememberMeSection(BuildContext context) {
+  Widget _buildRememberMeSection() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        BlocSelector<Iphone1415ProMaxFiveBloc, Iphone1415ProMaxFiveState,
-            bool?>(
-          selector: (state) => state.rememberMe,
-          builder: (context, rememberMe) {
-            return CustomCheckboxButton(
-              text: "lbl_remember_me".tr,
-              value: rememberMe,
-              padding: EdgeInsets.symmetric(vertical: 1.v),
-              onChange: (value) {
-                context
-                    .read<Iphone1415ProMaxFiveBloc>()
-                    .add(ChangeCheckBoxEvent(value: value));
-              },
-            );
-          },
+        Obx(
+          () => CustomCheckboxButton(
+            text: "lbl_remember_me".tr,
+            value: controller.rememberMe.value,
+            padding: EdgeInsets.symmetric(vertical: 1.v),
+            onChange: (value) {
+              controller.rememberMe.value = value;
+            },
+          ),
         ),
         Padding(
           padding: EdgeInsets.only(top: 3.v),
@@ -286,7 +259,7 @@ class Iphone1415ProMaxFiveScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildSocialLoginSection(BuildContext context) {
+  Widget _buildSocialLoginSection() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -319,15 +292,15 @@ class Iphone1415ProMaxFiveScreen extends StatelessWidget {
   }
 
   /// Navigates to the iphone1415ProMaxSixScreen when the action is triggered.
-  onTapTxtRegisternow(BuildContext context) {
-    NavigatorService.pushNamed(
+  onTapTxtRegisternow() {
+    Get.toNamed(
       AppRoutes.iphone1415ProMaxSixScreen,
     );
   }
 
   /// Navigates to the iphone1415ProMaxSevenContainerScreen when the action is triggered.
-  onTapTxtRegisterlater(BuildContext context) {
-    NavigatorService.pushNamed(
+  onTapTxtRegisterlater() {
+    Get.toNamed(
       AppRoutes.iphone1415ProMaxSevenContainerScreen,
     );
   }

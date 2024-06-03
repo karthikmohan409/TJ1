@@ -75,16 +75,15 @@ class CustomSearchView extends StatelessWidget {
   Widget build(BuildContext context) {
     return alignment != null
         ? Align(
-            alignment: alignment ?? Alignment.center,
-            child: searchViewWidget(context))
-        : searchViewWidget(context);
+            alignment: alignment ?? Alignment.center, child: searchViewWidget)
+        : searchViewWidget;
   }
 
-  Widget searchViewWidget(BuildContext context) => SizedBox(
+  Widget get searchViewWidget => SizedBox(
         width: width ?? double.maxFinite,
         child: TextFormField(
-          scrollPadding:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          scrollPadding: EdgeInsets.only(
+              bottom: MediaQuery.of(Get.context!).viewInsets.bottom),
           controller: controller,
           focusNode: focusNode,
           onTapOutside: (event) {

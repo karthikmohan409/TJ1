@@ -4,26 +4,16 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../core/app_export.dart';
 import '../../theme/custom_button_style.dart';
 import '../../widgets/custom_elevated_button.dart';
-import 'bloc/iphone_14_15_pro_max_four_bloc.dart';
+import 'controller/iphone_14_15_pro_max_four_controller.dart';
 import 'models/imageslider2_item_model.dart';
-import 'models/iphone_14_15_pro_max_four_model.dart';
-import 'widgets/imageslider2_item_widget.dart';
+import 'widgets/imageslider2_item_widget.dart'; // ignore_for_file: must_be_immutable
 
-class Iphone1415ProMaxFourScreen extends StatelessWidget {
+class Iphone1415ProMaxFourScreen
+    extends GetWidget<Iphone1415ProMaxFourController> {
   const Iphone1415ProMaxFourScreen({Key? key})
       : super(
           key: key,
         );
-
-  static Widget builder(BuildContext context) {
-    return BlocProvider<Iphone1415ProMaxFourBloc>(
-      create: (context) => Iphone1415ProMaxFourBloc(Iphone1415ProMaxFourState(
-        iphone1415ProMaxFourModelObj: Iphone1415ProMaxFourModel(),
-      ))
-        ..add(Iphone1415ProMaxFourInitialEvent()),
-      child: Iphone1415ProMaxFourScreen(),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +41,7 @@ class Iphone1415ProMaxFourScreen extends StatelessWidget {
                   child: Stack(
                     alignment: Alignment.topRight,
                     children: [
-                      _buildImageSlider(context),
+                      _buildImageSlider(),
                       CustomElevatedButton(
                         height: 35.v,
                         width: 67.h,
@@ -115,7 +105,7 @@ class Iphone1415ProMaxFourScreen extends StatelessWidget {
                   margin: EdgeInsets.symmetric(horizontal: 33.h),
                   buttonStyle: CustomButtonStyles.fillPrimary,
                   onPressed: () {
-                    onTapContinue(context);
+                    onTapContinue();
                   },
                   alignment: Alignment.center,
                 ),
@@ -124,7 +114,7 @@ class Iphone1415ProMaxFourScreen extends StatelessWidget {
                   alignment: Alignment.center,
                   child: GestureDetector(
                     onTap: () {
-                      onTapTxtBack(context);
+                      onTapTxtBack();
                     },
                     child: Text(
                       "lbl_back".tr,
@@ -142,47 +132,43 @@ class Iphone1415ProMaxFourScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildImageSlider(BuildContext context) {
-    return BlocBuilder<Iphone1415ProMaxFourBloc, Iphone1415ProMaxFourState>(
-      builder: (context, state) {
-        return CarouselSlider.builder(
-          options: CarouselOptions(
-            height: 502.v,
-            initialPage: 0,
-            autoPlay: true,
-            viewportFraction: 1.0,
-            enableInfiniteScroll: false,
-            scrollDirection: Axis.horizontal,
-            onPageChanged: (index, reason) {
-              state.sliderIndex = index;
-            },
-          ),
-          itemCount:
-              state.iphone1415ProMaxFourModelObj?.imageslider2ItemList.length ??
-                  0,
-          itemBuilder: (context, index, realIndex) {
-            Imageslider2ItemModel model = state.iphone1415ProMaxFourModelObj
-                    ?.imageslider2ItemList[index] ??
-                Imageslider2ItemModel();
-            return Imageslider2ItemWidget(
-              model,
-            );
+  Widget _buildImageSlider() {
+    return Obx(
+      () => CarouselSlider.builder(
+        options: CarouselOptions(
+          height: 502.v,
+          initialPage: 0,
+          autoPlay: true,
+          viewportFraction: 1.0,
+          enableInfiniteScroll: false,
+          scrollDirection: Axis.horizontal,
+          onPageChanged: (index, reason) {
+            controller.sliderIndex.value = index;
           },
-        );
-      },
+        ),
+        itemCount: controller.iphone1415ProMaxFourModelObj.value
+            .imageslider2ItemList.value.length,
+        itemBuilder: (context, index, realIndex) {
+          Imageslider2ItemModel model = controller.iphone1415ProMaxFourModelObj
+              .value.imageslider2ItemList.value[index];
+          return Imageslider2ItemWidget(
+            model,
+          );
+        },
+      ),
     );
   }
 
   /// Navigates to the iphone1415ProMaxFiveScreen when the action is triggered.
-  onTapContinue(BuildContext context) {
-    NavigatorService.pushNamed(
+  onTapContinue() {
+    Get.toNamed(
       AppRoutes.iphone1415ProMaxFiveScreen,
     );
   }
 
   /// Navigates to the iphone1415ProMaxThreeScreen when the action is triggered.
-  onTapTxtBack(BuildContext context) {
-    NavigatorService.pushNamed(
+  onTapTxtBack() {
+    Get.toNamed(
       AppRoutes.iphone1415ProMaxThreeScreen,
     );
   }

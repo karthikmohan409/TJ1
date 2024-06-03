@@ -3,33 +3,19 @@ import 'package:easy_date_timeline/easy_date_timeline.dart';
 import '../../core/app_export.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_outlined_button.dart';
-import 'bloc/iphone_14_15_pro_max_nine_bloc.dart';
+import 'controller/iphone_14_15_pro_max_nine_controller.dart';
 import 'models/iphone_14_15_pro_max_nine_model.dart'; // ignore_for_file: must_be_immutable
 
-class Iphone1415ProMaxNinePage extends StatefulWidget {
-  const Iphone1415ProMaxNinePage({Key? key})
+// ignore_for_file: must_be_immutable
+class Iphone1415ProMaxNinePage extends StatelessWidget {
+  Iphone1415ProMaxNinePage({Key? key})
       : super(
           key: key,
         );
 
-  @override
-  Iphone1415ProMaxNinePageState createState() =>
-      Iphone1415ProMaxNinePageState();
-  static Widget builder(BuildContext context) {
-    return BlocProvider<Iphone1415ProMaxNineBloc>(
-      create: (context) => Iphone1415ProMaxNineBloc(Iphone1415ProMaxNineState(
-        iphone1415ProMaxNineModelObj: Iphone1415ProMaxNineModel(),
-      ))
-        ..add(Iphone1415ProMaxNineInitialEvent()),
-      child: Iphone1415ProMaxNinePage(),
-    );
-  }
-}
+  Iphone1415ProMaxNineController controller =
+      Get.put(Iphone1415ProMaxNineController(Iphone1415ProMaxNineModel().obs));
 
-class Iphone1415ProMaxNinePageState extends State<Iphone1415ProMaxNinePage>
-    with AutomaticKeepAliveClientMixin<Iphone1415ProMaxNinePage> {
-  @override
-  bool get wantKeepAlive => true;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -50,7 +36,7 @@ class Iphone1415ProMaxNinePageState extends State<Iphone1415ProMaxNinePage>
           child: Container(
             decoration: AppDecoration.gradientDeepPurpleToIndigo9001,
             child: Column(
-              children: [SizedBox(height: 13.v), _buildMainContent(context)],
+              children: [SizedBox(height: 13.v), _buildMainContent()],
             ),
           ),
         ),
@@ -59,7 +45,7 @@ class Iphone1415ProMaxNinePageState extends State<Iphone1415ProMaxNinePage>
   }
 
   /// Section Widget
-  Widget _buildMainContent(BuildContext context) {
+  Widget _buildMainContent() {
     return Column(
       children: [
         Divider(
@@ -85,7 +71,7 @@ class Iphone1415ProMaxNinePageState extends State<Iphone1415ProMaxNinePage>
               ),
               GestureDetector(
                 onTap: () {
-                  onTapRowf7sportscour(context);
+                  onTapRowf7sportscour();
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -120,88 +106,85 @@ class Iphone1415ProMaxNinePageState extends State<Iphone1415ProMaxNinePage>
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              BlocBuilder<Iphone1415ProMaxNineBloc, Iphone1415ProMaxNineState>(
-                builder: (context, state) {
-                  return SizedBox(
-                    height: 75.v,
-                    width: 317.h,
-                    child: EasyDateTimeLine(
-                      initialDate:
-                          state.selectedDatesFromCalendar ?? DateTime.now(),
-                      locale: 'en_US',
-                      headerProps: EasyHeaderProps(
-                        selectedDateFormat: SelectedDateFormat.fullDateDMY,
-                        monthPickerType: MonthPickerType.switcher,
-                        showHeader: false,
-                      ),
-                      dayProps: EasyDayProps(
-                        width: 49.h,
-                        height: 60.v,
-                      ),
-                      onDateChange: (selectedDate) {
-                        state.selectedDatesFromCalendar = selectedDate;
-                      },
-                      itemBuilder: (context, dayNumber, dayName, monthName,
-                          fullDate, isSelected) {
-                        return isSelected
-                            ? Container(
-                                width: 49.h,
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 12.h,
-                                  vertical: 5.v,
+              Obx(
+                () => SizedBox(
+                  height: 75.v,
+                  width: 317.h,
+                  child: EasyDateTimeLine(
+                    initialDate: controller.selectedDatesFromCalendar.value,
+                    locale: 'en_US',
+                    headerProps: EasyHeaderProps(
+                      selectedDateFormat: SelectedDateFormat.fullDateDMY,
+                      monthPickerType: MonthPickerType.switcher,
+                      showHeader: false,
+                    ),
+                    dayProps: EasyDayProps(
+                      width: 49.h,
+                      height: 60.v,
+                    ),
+                    onDateChange: (selectedDate) {
+                      controller.selectedDatesFromCalendar.value = selectedDate;
+                    },
+                    itemBuilder: (context, dayNumber, dayName, monthName,
+                        fullDate, isSelected) {
+                      return isSelected
+                          ? Container(
+                              width: 49.h,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 12.h,
+                                vertical: 5.v,
+                              ),
+                              decoration: BoxDecoration(
+                                color: appTheme.cyan5023,
+                                borderRadius: BorderRadius.circular(
+                                  14.h,
                                 ),
-                                decoration: BoxDecoration(
-                                  color: appTheme.cyan5023,
-                                  borderRadius: BorderRadius.circular(
-                                    14.h,
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    dayName.toString(),
+                                    style:
+                                        theme.textTheme.titleMedium!.copyWith(
+                                      color: theme
+                                          .colorScheme.onPrimaryContainer
+                                          .withOpacity(1),
+                                    ),
                                   ),
-                                ),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      dayName.toString(),
-                                      style:
-                                          theme.textTheme.titleMedium!.copyWith(
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      top: 6.v,
+                                      bottom: 1.v,
+                                    ),
+                                    child: Text(
+                                      dayNumber.toString(),
+                                      style: CustomTextStyles
+                                          .bodyLargeOnPrimaryContainer_6
+                                          .copyWith(
                                         color: theme
                                             .colorScheme.onPrimaryContainer
                                             .withOpacity(1),
                                       ),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        top: 6.v,
-                                        bottom: 1.v,
-                                      ),
-                                      child: Text(
-                                        dayNumber.toString(),
-                                        style: CustomTextStyles
-                                            .bodyLargeOnPrimaryContainer_6
-                                            .copyWith(
-                                          color: theme
-                                              .colorScheme.onPrimaryContainer
-                                              .withOpacity(1),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ))
-                            : Container(
-                                height: 11.adaptSize,
-                                width: 11.adaptSize,
-                                decoration: BoxDecoration(
-                                  color: appTheme.orange700,
-                                  borderRadius: BorderRadius.circular(
-                                    5.h,
-                                  ),
+                                  )
+                                ],
+                              ))
+                          : Container(
+                              height: 11.adaptSize,
+                              width: 11.adaptSize,
+                              decoration: BoxDecoration(
+                                color: appTheme.orange700,
+                                borderRadius: BorderRadius.circular(
+                                  5.h,
                                 ),
-                              );
-                      },
-                    ),
-                  );
-                },
+                              ),
+                            );
+                    },
+                  ),
+                ),
               ),
               CustomImageView(
                 imagePath: ImageConstant.imgCalendar,
@@ -213,7 +196,7 @@ class Iphone1415ProMaxNinePageState extends State<Iphone1415ProMaxNinePage>
                   bottom: 18.v,
                 ),
                 onTap: () {
-                  onTapImgCalendartwo(context);
+                  onTapImgCalendartwo();
                 },
               )
             ],
@@ -340,15 +323,15 @@ class Iphone1415ProMaxNinePageState extends State<Iphone1415ProMaxNinePage>
   }
 
   /// Navigates to the calendarFourScreen when the action is triggered.
-  onTapRowf7sportscour(BuildContext context) {
-    NavigatorService.pushNamed(
+  onTapRowf7sportscour() {
+    Get.toNamed(
       AppRoutes.calendarFourScreen,
     );
   }
 
   /// Navigates to the calendarThreeScreen when the action is triggered.
-  onTapImgCalendartwo(BuildContext context) {
-    NavigatorService.pushNamed(
+  onTapImgCalendartwo() {
+    Get.toNamed(
       AppRoutes.calendarThreeScreen,
     );
   }

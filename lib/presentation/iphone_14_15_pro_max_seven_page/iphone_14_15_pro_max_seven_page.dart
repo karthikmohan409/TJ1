@@ -6,28 +6,22 @@ import '../../widgets/app_bar/appbar_trailing_image.dart';
 import '../../widgets/app_bar/custom_app_bar.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_search_view.dart';
-import 'bloc/iphone_14_15_pro_max_seven_bloc.dart';
+import 'controller/iphone_14_15_pro_max_seven_controller.dart';
 import 'models/iphone_14_15_pro_max_seven_model.dart';
 import 'models/userprofilelist_item_model.dart';
 import 'models/viewhierarchylist_item_model.dart';
 import 'widgets/userprofilelist_item_widget.dart';
 import 'widgets/viewhierarchylist_item_widget.dart'; // ignore_for_file: must_be_immutable
 
+// ignore_for_file: must_be_immutable
 class Iphone1415ProMaxSevenPage extends StatelessWidget {
-  const Iphone1415ProMaxSevenPage({Key? key})
+  Iphone1415ProMaxSevenPage({Key? key})
       : super(
           key: key,
         );
 
-  static Widget builder(BuildContext context) {
-    return BlocProvider<Iphone1415ProMaxSevenBloc>(
-      create: (context) => Iphone1415ProMaxSevenBloc(Iphone1415ProMaxSevenState(
-        iphone1415ProMaxSevenModelObj: Iphone1415ProMaxSevenModel(),
-      ))
-        ..add(Iphone1415ProMaxSevenInitialEvent()),
-      child: Iphone1415ProMaxSevenPage(),
-    );
-  }
+  Iphone1415ProMaxSevenController controller = Get.put(
+      Iphone1415ProMaxSevenController(Iphone1415ProMaxSevenModel().obs));
 
   @override
   Widget build(BuildContext context) {
@@ -35,12 +29,13 @@ class Iphone1415ProMaxSevenPage extends StatelessWidget {
       child: Scaffold(
         extendBody: true,
         extendBodyBehindAppBar: true,
-        backgroundColor: Colors.transparent,
         resizeToAvoidBottomInset: false,
-        appBar: _buildAppBar(context),
+        backgroundColor: Colors.transparent,
+        appBar: _buildAppBar(),
         body: Container(
           width: SizeUtils.width,
           height: SizeUtils.height,
+          padding: EdgeInsets.only(top: 45.v),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment(0.86, 1.06),
@@ -60,16 +55,10 @@ class Iphone1415ProMaxSevenPage extends StatelessWidget {
                       left: 31.h,
                       right: 27.h,
                     ),
-                    child: BlocSelector<Iphone1415ProMaxSevenBloc,
-                        Iphone1415ProMaxSevenState, TextEditingController?>(
-                      selector: (state) => state.searchController,
-                      builder: (context, searchController) {
-                        return CustomSearchView(
-                          controller: searchController,
-                          hintText: "msg_search_sports_or".tr,
-                          alignment: Alignment.center,
-                        );
-                      },
+                    child: CustomSearchView(
+                      controller: controller.searchController,
+                      hintText: "msg_search_sports_or".tr,
+                      alignment: Alignment.center,
                     ),
                   ),
                 ),
@@ -85,13 +74,13 @@ class Iphone1415ProMaxSevenPage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 25.v),
-                _buildUserProfileList(context),
+                _buildUserProfileList(),
                 SizedBox(height: 24.v),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: GestureDetector(
                     onTap: () {
-                      onTapRowsummercamp(context);
+                      onTapRowsummercamp();
                     },
                     child: Padding(
                       padding: EdgeInsets.only(
@@ -124,13 +113,13 @@ class Iphone1415ProMaxSevenPage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 23.v),
-                _buildViewHierarchyList(context),
+                _buildViewHierarchyList(),
                 SizedBox(height: 23.v),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: GestureDetector(
                     onTap: () {
-                      onTapRowafterschool(context);
+                      onTapRowafterschool();
                     },
                     child: Padding(
                       padding: EdgeInsets.only(
@@ -163,8 +152,8 @@ class Iphone1415ProMaxSevenPage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 23.v),
-                _buildImageRow(context),
-                _buildBadmintonRow(context)
+                _buildImageRow(),
+                _buildBadmintonRow()
               ],
             ),
           ),
@@ -174,7 +163,7 @@ class Iphone1415ProMaxSevenPage extends StatelessWidget {
   }
 
   /// Section Widget
-  PreferredSizeWidget _buildAppBar(BuildContext context) {
+  PreferredSizeWidget _buildAppBar() {
     return CustomAppBar(
       height: 45.v,
       leadingWidth: 73.h,
@@ -194,7 +183,7 @@ class Iphone1415ProMaxSevenPage extends StatelessWidget {
             vertical: 8.v,
           ),
           onTap: () {
-            onTapSettingsone(context);
+            onTapSettingsone();
           },
         )
       ],
@@ -202,73 +191,67 @@ class Iphone1415ProMaxSevenPage extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildUserProfileList(BuildContext context) {
+  Widget _buildUserProfileList() {
     return SizedBox(
       height: 188.v,
-      child: BlocSelector<Iphone1415ProMaxSevenBloc, Iphone1415ProMaxSevenState,
-          Iphone1415ProMaxSevenModel?>(
-        selector: (state) => state.iphone1415ProMaxSevenModelObj,
-        builder: (context, iphone1415ProMaxSevenModelObj) {
-          return ListView.separated(
-            padding: EdgeInsets.only(left: 34.h),
-            scrollDirection: Axis.horizontal,
-            separatorBuilder: (context, index) {
-              return SizedBox(
-                width: 16.h,
-              );
-            },
-            itemCount:
-                iphone1415ProMaxSevenModelObj?.userprofilelistItemList.length ??
-                    0,
-            itemBuilder: (context, index) {
-              UserprofilelistItemModel model = iphone1415ProMaxSevenModelObj
-                      ?.userprofilelistItemList[index] ??
-                  UserprofilelistItemModel();
-              return UserprofilelistItemWidget(
-                model,
-              );
-            },
-          );
-        },
+      child: Obx(
+        () => ListView.separated(
+          padding: EdgeInsets.only(left: 34.h),
+          scrollDirection: Axis.horizontal,
+          separatorBuilder: (context, index) {
+            return SizedBox(
+              width: 16.h,
+            );
+          },
+          itemCount: controller.iphone1415ProMaxSevenModelObj.value
+              .userprofilelistItemList.value.length,
+          itemBuilder: (context, index) {
+            UserprofilelistItemModel model = controller
+                .iphone1415ProMaxSevenModelObj
+                .value
+                .userprofilelistItemList
+                .value[index];
+            return UserprofilelistItemWidget(
+              model,
+            );
+          },
+        ),
       ),
     );
   }
 
   /// Section Widget
-  Widget _buildViewHierarchyList(BuildContext context) {
+  Widget _buildViewHierarchyList() {
     return SizedBox(
       height: 188.v,
-      child: BlocSelector<Iphone1415ProMaxSevenBloc, Iphone1415ProMaxSevenState,
-          Iphone1415ProMaxSevenModel?>(
-        selector: (state) => state.iphone1415ProMaxSevenModelObj,
-        builder: (context, iphone1415ProMaxSevenModelObj) {
-          return ListView.separated(
-            padding: EdgeInsets.only(left: 34.h),
-            scrollDirection: Axis.horizontal,
-            separatorBuilder: (context, index) {
-              return SizedBox(
-                width: 16.h,
-              );
-            },
-            itemCount: iphone1415ProMaxSevenModelObj
-                    ?.viewhierarchylistItemList.length ??
-                0,
-            itemBuilder: (context, index) {
-              ViewhierarchylistItemModel model = iphone1415ProMaxSevenModelObj
-                      ?.viewhierarchylistItemList[index] ??
-                  ViewhierarchylistItemModel();
-              return ViewhierarchylistItemWidget(
-                model,
-              );
-            },
-          );
-        },
+      child: Obx(
+        () => ListView.separated(
+          padding: EdgeInsets.only(left: 34.h),
+          scrollDirection: Axis.horizontal,
+          separatorBuilder: (context, index) {
+            return SizedBox(
+              width: 16.h,
+            );
+          },
+          itemCount: controller.iphone1415ProMaxSevenModelObj.value
+              .viewhierarchylistItemList.value.length,
+          itemBuilder: (context, index) {
+            ViewhierarchylistItemModel model = controller
+                .iphone1415ProMaxSevenModelObj
+                .value
+                .viewhierarchylistItemList
+                .value[index];
+            return ViewhierarchylistItemWidget(
+              model,
+            );
+          },
+        ),
       ),
     );
   }
 
   /// Section Widget
-  Widget _buildImageRow(BuildContext context) {
+  Widget _buildImageRow() {
     return Padding(
       padding: EdgeInsets.only(left: 34.h),
       child: Row(
@@ -297,7 +280,7 @@ class Iphone1415ProMaxSevenPage extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildBadmintonRow(BuildContext context) {
+  Widget _buildBadmintonRow() {
     return Padding(
       padding: EdgeInsets.only(left: 34.h),
       child: Row(
@@ -384,22 +367,22 @@ class Iphone1415ProMaxSevenPage extends StatelessWidget {
   }
 
   /// Navigates to the iphone1415ProMaxTwentythreeScreen when the action is triggered.
-  onTapSettingsone(BuildContext context) {
-    NavigatorService.pushNamed(
+  onTapSettingsone() {
+    Get.toNamed(
       AppRoutes.iphone1415ProMaxTwentythreeScreen,
     );
   }
 
   /// Navigates to the iphone1415ProMaxTwentyfourScreen when the action is triggered.
-  onTapRowsummercamp(BuildContext context) {
-    NavigatorService.pushNamed(
+  onTapRowsummercamp() {
+    Get.toNamed(
       AppRoutes.iphone1415ProMaxTwentyfourScreen,
     );
   }
 
   /// Navigates to the iphone1415ProMaxTwentyfiveScreen when the action is triggered.
-  onTapRowafterschool(BuildContext context) {
-    NavigatorService.pushNamed(
+  onTapRowafterschool() {
+    Get.toNamed(
       AppRoutes.iphone1415ProMaxTwentyfiveScreen,
     );
   }

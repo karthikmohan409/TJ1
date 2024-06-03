@@ -8,28 +8,14 @@ import '../../widgets/custom_radio_button.dart';
 import '../iphone_14_15_pro_max_nine_tab_container_page/iphone_14_15_pro_max_nine_tab_container_page.dart';
 import '../iphone_14_15_pro_max_seven_page/iphone_14_15_pro_max_seven_page.dart';
 import '../iphone_14_15_pro_max_sixteen_page/iphone_14_15_pro_max_sixteen_page.dart';
-import 'bloc/iphone_14_15_pro_max_twentythree_bloc.dart';
-import 'models/iphone_14_15_pro_max_twentythree_model.dart'; // ignore_for_file: must_be_immutable
+import 'controller/iphone_14_15_pro_max_twentythree_controller.dart'; // ignore_for_file: must_be_immutable
 
-// ignore_for_file: must_be_immutable
-class Iphone1415ProMaxTwentythreeScreen extends StatelessWidget {
-  Iphone1415ProMaxTwentythreeScreen({Key? key})
+class Iphone1415ProMaxTwentythreeScreen
+    extends GetWidget<Iphone1415ProMaxTwentythreeController> {
+  const Iphone1415ProMaxTwentythreeScreen({Key? key})
       : super(
           key: key,
         );
-
-  GlobalKey<NavigatorState> navigatorKey = GlobalKey();
-
-  static Widget builder(BuildContext context) {
-    return BlocProvider<Iphone1415ProMaxTwentythreeBloc>(
-      create: (context) =>
-          Iphone1415ProMaxTwentythreeBloc(Iphone1415ProMaxTwentythreeState(
-        iphone1415ProMaxTwentythreeModelObj: Iphone1415ProMaxTwentythreeModel(),
-      ))
-            ..add(Iphone1415ProMaxTwentythreeInitialEvent()),
-      child: Iphone1415ProMaxTwentythreeScreen(),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +23,14 @@ class Iphone1415ProMaxTwentythreeScreen extends StatelessWidget {
       child: Scaffold(
         extendBody: true,
         extendBodyBehindAppBar: true,
-        appBar: _buildAppBar(context),
+        appBar: _buildAppBar(),
         body: Container(
           width: SizeUtils.width,
           height: SizeUtils.height,
+          padding: EdgeInsets.only(
+            top: 47.v,
+            bottom: 79.v,
+          ),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment(0.86, 1.06),
@@ -102,7 +92,6 @@ class Iphone1415ProMaxTwentythreeScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(left: 20.h),
                   child: _buildBookingDetailsRow(
-                    context,
                     eventDate: "lbl_june_1_2024".tr,
                     eventTime: "msg_4_00_pm_5_00".tr,
                   ),
@@ -111,7 +100,6 @@ class Iphone1415ProMaxTwentythreeScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(left: 20.h),
                   child: _buildCourtInfoRow(
-                    context,
                     courtnumberthre: "lbl_court_number_3".tr,
                     duration: "lbl_15_min_ago".tr,
                   ),
@@ -119,13 +107,13 @@ class Iphone1415ProMaxTwentythreeScreen extends StatelessWidget {
                 SizedBox(height: 9.v),
                 Divider(),
                 SizedBox(height: 19.v),
-                _buildBookingStack(context),
+                _buildBookingStack(),
                 SizedBox(height: 29.v),
-                _buildBookingStack1(context),
+                _buildBookingStack1(),
                 SizedBox(height: 9.v),
                 Divider(),
                 SizedBox(height: 19.v),
-                _buildBookingConfirmation(context),
+                _buildBookingConfirmation(),
                 SizedBox(height: 9.v),
                 Align(
                   alignment: Alignment.centerLeft,
@@ -141,7 +129,6 @@ class Iphone1415ProMaxTwentythreeScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(left: 20.h),
                   child: _buildBookingDetailsRow(
-                    context,
                     eventDate: "lbl_june_1_2024".tr,
                     eventTime: "msg_4_00_pm_5_00".tr,
                   ),
@@ -150,7 +137,6 @@ class Iphone1415ProMaxTwentythreeScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(left: 20.h),
                   child: _buildCourtInfoRow(
-                    context,
                     courtnumberthre: "lbl_court_number_3".tr,
                     duration: "lbl_6_day_ago".tr,
                   ),
@@ -158,7 +144,7 @@ class Iphone1415ProMaxTwentythreeScreen extends StatelessWidget {
                 SizedBox(height: 9.v),
                 Divider(),
                 SizedBox(height: 19.v),
-                _buildBookingStack2(context),
+                _buildBookingStack2(),
                 SizedBox(height: 9.v),
                 Divider(),
                 SizedBox(height: 5.v)
@@ -166,13 +152,13 @@ class Iphone1415ProMaxTwentythreeScreen extends StatelessWidget {
             ),
           ),
         ),
-        bottomNavigationBar: _buildBottomBar(context),
+        bottomNavigationBar: _buildBottomBar(),
       ),
     );
   }
 
   /// Section Widget
-  PreferredSizeWidget _buildAppBar(BuildContext context) {
+  PreferredSizeWidget _buildAppBar() {
     return CustomAppBar(
       height: 47.v,
       leadingWidth: 55.h,
@@ -192,7 +178,7 @@ class Iphone1415ProMaxTwentythreeScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildBookingStack(BuildContext context) {
+  Widget _buildBookingStack() {
     return SizedBox(
       height: 110.v,
       width: 375.h,
@@ -247,7 +233,6 @@ class Iphone1415ProMaxTwentythreeScreen extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(left: 19.h),
                     child: _buildBookingDetailsRow(
-                      context,
                       eventDate: "lbl_june_1_2024".tr,
                       eventTime: "msg_4_00_pm_5_00".tr,
                     ),
@@ -270,7 +255,7 @@ class Iphone1415ProMaxTwentythreeScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildBookingStack1(BuildContext context) {
+  Widget _buildBookingStack1() {
     return SizedBox(
       height: 110.v,
       width: 375.h,
@@ -325,7 +310,6 @@ class Iphone1415ProMaxTwentythreeScreen extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(left: 19.h),
                     child: _buildBookingDetailsRow(
-                      context,
                       eventDate: "lbl_june_1_2024".tr,
                       eventTime: "msg_4_00_pm_5_00".tr,
                     ),
@@ -348,33 +332,27 @@ class Iphone1415ProMaxTwentythreeScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildBookingConfirmation(BuildContext context) {
+  Widget _buildBookingConfirmation() {
     return Align(
       alignment: Alignment.centerLeft,
-      child: BlocSelector<Iphone1415ProMaxTwentythreeBloc,
-          Iphone1415ProMaxTwentythreeState, String?>(
-        selector: (state) => state.radioGroup,
-        builder: (context, radioGroup) {
-          return Padding(
-            padding: EdgeInsets.only(right: 49.h),
-            child: CustomRadioButton(
-              text: "msg_booking_confirmed".tr,
-              value: "msg_booking_confirmed".tr,
-              groupValue: radioGroup,
-              onChange: (value) {
-                context
-                    .read<Iphone1415ProMaxTwentythreeBloc>()
-                    .add(ChangeRadioButtonEvent(value: value));
-              },
-            ),
-          );
-        },
+      child: Obx(
+        () => Padding(
+          padding: EdgeInsets.only(right: 49.h),
+          child: CustomRadioButton(
+            text: "msg_booking_confirmed".tr,
+            value: "msg_booking_confirmed".tr,
+            groupValue: controller.radioGroup.value,
+            onChange: (value) {
+              controller.radioGroup.value = value;
+            },
+          ),
+        ),
       ),
     );
   }
 
   /// Section Widget
-  Widget _buildBookingStack2(BuildContext context) {
+  Widget _buildBookingStack2() {
     return SizedBox(
       height: 110.v,
       width: 375.h,
@@ -429,7 +407,6 @@ class Iphone1415ProMaxTwentythreeScreen extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(left: 19.h),
                     child: _buildBookingDetailsRow(
-                      context,
                       eventDate: "lbl_june_1_2024".tr,
                       eventTime: "msg_4_00_pm_5_00".tr,
                     ),
@@ -452,18 +429,16 @@ class Iphone1415ProMaxTwentythreeScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildBottomBar(BuildContext context) {
+  Widget _buildBottomBar() {
     return CustomBottomBar(
       onChanged: (BottomBarEnum type) {
-        Navigator.pushNamed(
-            navigatorKey.currentContext!, getCurrentRoute(type));
+        Get.toNamed(getCurrentRoute(type), id: 1);
       },
     );
   }
 
   /// Common widget
-  Widget _buildBookingDetailsRow(
-    BuildContext context, {
+  Widget _buildBookingDetailsRow({
     required String eventDate,
     required String eventTime,
   }) {
@@ -490,8 +465,7 @@ class Iphone1415ProMaxTwentythreeScreen extends StatelessWidget {
   }
 
   /// Common widget
-  Widget _buildCourtInfoRow(
-    BuildContext context, {
+  Widget _buildCourtInfoRow({
     required String courtnumberthre,
     required String duration,
   }) {
@@ -536,17 +510,14 @@ class Iphone1415ProMaxTwentythreeScreen extends StatelessWidget {
   }
 
   ///Handling page based on route
-  Widget getCurrentPage(
-    BuildContext context,
-    String currentRoute,
-  ) {
+  Widget getCurrentPage(String currentRoute) {
     switch (currentRoute) {
       case AppRoutes.iphone1415ProMaxSevenPage:
-        return Iphone1415ProMaxSevenPage.builder(context);
+        return Iphone1415ProMaxSevenPage();
       case AppRoutes.iphone1415ProMaxNineTabContainerPage:
-        return Iphone1415ProMaxNineTabContainerPage.builder(context);
+        return Iphone1415ProMaxNineTabContainerPage();
       case AppRoutes.iphone1415ProMaxSixteenPage:
-        return Iphone1415ProMaxSixteenPage.builder(context);
+        return Iphone1415ProMaxSixteenPage();
       default:
         return DefaultWidget();
     }

@@ -2,27 +2,18 @@ import 'package:flutter/material.dart';
 import '../../core/app_export.dart';
 import '../../core/utils/validation_functions.dart';
 import '../../widgets/custom_text_form_field.dart';
-import 'bloc/iphone_14_15_pro_max_six_bloc.dart';
-import 'models/iphone_14_15_pro_max_six_model.dart'; // ignore_for_file: must_be_immutable
+import 'controller/iphone_14_15_pro_max_six_controller.dart'; // ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable
 
 // ignore_for_file: must_be_immutable
-class Iphone1415ProMaxSixScreen extends StatelessWidget {
+class Iphone1415ProMaxSixScreen
+    extends GetWidget<Iphone1415ProMaxSixController> {
   Iphone1415ProMaxSixScreen({Key? key})
       : super(
           key: key,
         );
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  static Widget builder(BuildContext context) {
-    return BlocProvider<Iphone1415ProMaxSixBloc>(
-      create: (context) => Iphone1415ProMaxSixBloc(Iphone1415ProMaxSixState(
-        iphone1415ProMaxSixModelObj: Iphone1415ProMaxSixModel(),
-      ))
-        ..add(Iphone1415ProMaxSixInitialEvent()),
-      child: Iphone1415ProMaxSixScreen(),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,11 +56,11 @@ class Iphone1415ProMaxSixScreen extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                _buildFullNameSection(context),
+                                _buildFullNameSection(),
                                 SizedBox(height: 32.v),
-                                _buildPhoneNumberSection(context),
+                                _buildPhoneNumberSection(),
                                 SizedBox(height: 32.v),
-                                _buildEmailIdSection(context),
+                                _buildEmailIdSection(),
                                 SizedBox(height: 49.v),
                                 Text(
                                   "msg_address_information".tr,
@@ -81,24 +72,15 @@ class Iphone1415ProMaxSixScreen extends StatelessWidget {
                                   style: theme.textTheme.titleMedium,
                                 ),
                                 SizedBox(height: 9.v),
-                                BlocSelector<
-                                    Iphone1415ProMaxSixBloc,
-                                    Iphone1415ProMaxSixState,
-                                    TextEditingController?>(
-                                  selector: (state) =>
-                                      state.enterFlatApartmController,
-                                  builder:
-                                      (context, enterFlatApartmController) {
-                                    return CustomTextFormField(
-                                      controller: enterFlatApartmController,
-                                      hintText: "msg_enter_your_flat".tr,
-                                    );
-                                  },
+                                CustomTextFormField(
+                                  controller:
+                                      controller.enterFlatApartmController,
+                                  hintText: "msg_enter_your_flat".tr,
                                 ),
                                 SizedBox(height: 21.v),
-                                _buildStreetNameSection(context),
+                                _buildStreetNameSection(),
                                 SizedBox(height: 29.v),
-                                _buildCitySection(context),
+                                _buildCitySection(),
                                 SizedBox(height: 27.v),
                                 Text(
                                   "msg_state_province".tr,
@@ -107,23 +89,14 @@ class Iphone1415ProMaxSixScreen extends StatelessWidget {
                               ],
                             ),
                             SizedBox(height: 10.v),
-                            BlocSelector<
-                                Iphone1415ProMaxSixBloc,
-                                Iphone1415ProMaxSixState,
-                                TextEditingController?>(
-                              selector: (state) =>
-                                  state.enterstateproviController,
-                              builder: (context, enterstateproviController) {
-                                return CustomTextFormField(
-                                  controller: enterstateproviController,
-                                  hintText: "msg_enter_your_state".tr,
-                                  textInputAction: TextInputAction.done,
-                                  contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 12.h,
-                                    vertical: 15.v,
-                                  ),
-                                );
-                              },
+                            CustomTextFormField(
+                              controller: controller.enterstateproviController,
+                              hintText: "msg_enter_your_state".tr,
+                              textInputAction: TextInputAction.done,
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: 12.h,
+                                vertical: 15.v,
+                              ),
                             )
                           ],
                         ),
@@ -140,7 +113,7 @@ class Iphone1415ProMaxSixScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildFullNameSection(BuildContext context) {
+  Widget _buildFullNameSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -149,20 +122,14 @@ class Iphone1415ProMaxSixScreen extends StatelessWidget {
           style: theme.textTheme.titleMedium,
         ),
         SizedBox(height: 10.v),
-        BlocSelector<Iphone1415ProMaxSixBloc, Iphone1415ProMaxSixState,
-            TextEditingController?>(
-          selector: (state) => state.fullNameController,
-          builder: (context, fullNameController) {
-            return CustomTextFormField(
-              controller: fullNameController,
-              hintText: "msg_enter_your_full".tr,
-              validator: (value) {
-                if (!isText(value)) {
-                  return "err_msg_please_enter_valid_text".tr;
-                }
-                return null;
-              },
-            );
+        CustomTextFormField(
+          controller: controller.fullNameController,
+          hintText: "msg_enter_your_full".tr,
+          validator: (value) {
+            if (!isText(value)) {
+              return "err_msg_please_enter_valid_text".tr;
+            }
+            return null;
           },
         )
       ],
@@ -170,7 +137,7 @@ class Iphone1415ProMaxSixScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildPhoneNumberSection(BuildContext context) {
+  Widget _buildPhoneNumberSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -179,21 +146,15 @@ class Iphone1415ProMaxSixScreen extends StatelessWidget {
           style: theme.textTheme.titleMedium,
         ),
         SizedBox(height: 10.v),
-        BlocSelector<Iphone1415ProMaxSixBloc, Iphone1415ProMaxSixState,
-            TextEditingController?>(
-          selector: (state) => state.phoneNumberController,
-          builder: (context, phoneNumberController) {
-            return CustomTextFormField(
-              controller: phoneNumberController,
-              hintText: "msg_enter_your_phone".tr,
-              textInputType: TextInputType.phone,
-              validator: (value) {
-                if (!isValidPhone(value)) {
-                  return "err_msg_please_enter_valid_phone_number".tr;
-                }
-                return null;
-              },
-            );
+        CustomTextFormField(
+          controller: controller.phoneNumberController,
+          hintText: "msg_enter_your_phone".tr,
+          textInputType: TextInputType.phone,
+          validator: (value) {
+            if (!isValidPhone(value)) {
+              return "err_msg_please_enter_valid_phone_number".tr;
+            }
+            return null;
           },
         )
       ],
@@ -201,7 +162,7 @@ class Iphone1415ProMaxSixScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildEmailIdSection(BuildContext context) {
+  Widget _buildEmailIdSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -210,33 +171,27 @@ class Iphone1415ProMaxSixScreen extends StatelessWidget {
           style: theme.textTheme.titleMedium,
         ),
         SizedBox(height: 10.v),
-        BlocSelector<Iphone1415ProMaxSixBloc, Iphone1415ProMaxSixState,
-            TextEditingController?>(
-          selector: (state) => state.emailController,
-          builder: (context, emailController) {
-            return CustomTextFormField(
-              controller: emailController,
-              hintText: "msg_enter_your_email".tr,
-              textInputType: TextInputType.emailAddress,
-              validator: (value) {
-                if (value == null || (!isValidEmail(value, isRequired: true))) {
-                  return "err_msg_please_enter_valid_email".tr;
-                }
-                return null;
-              },
-              contentPadding: EdgeInsets.symmetric(
-                horizontal: 12.h,
-                vertical: 18.v,
-              ),
-            );
+        CustomTextFormField(
+          controller: controller.emailController,
+          hintText: "msg_enter_your_email".tr,
+          textInputType: TextInputType.emailAddress,
+          validator: (value) {
+            if (value == null || (!isValidEmail(value, isRequired: true))) {
+              return "err_msg_please_enter_valid_email".tr;
+            }
+            return null;
           },
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: 12.h,
+            vertical: 18.v,
+          ),
         )
       ],
     );
   }
 
   /// Section Widget
-  Widget _buildStreetNameSection(BuildContext context) {
+  Widget _buildStreetNameSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -245,20 +200,14 @@ class Iphone1415ProMaxSixScreen extends StatelessWidget {
           style: theme.textTheme.titleMedium,
         ),
         SizedBox(height: 10.v),
-        BlocSelector<Iphone1415ProMaxSixBloc, Iphone1415ProMaxSixState,
-            TextEditingController?>(
-          selector: (state) => state.nameController,
-          builder: (context, nameController) {
-            return CustomTextFormField(
-              controller: nameController,
-              hintText: "msg_enter_your_street".tr,
-              validator: (value) {
-                if (!isText(value)) {
-                  return "err_msg_please_enter_valid_text".tr;
-                }
-                return null;
-              },
-            );
+        CustomTextFormField(
+          controller: controller.nameController,
+          hintText: "msg_enter_your_street".tr,
+          validator: (value) {
+            if (!isText(value)) {
+              return "err_msg_please_enter_valid_text".tr;
+            }
+            return null;
           },
         )
       ],
@@ -266,7 +215,7 @@ class Iphone1415ProMaxSixScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildCitySection(BuildContext context) {
+  Widget _buildCitySection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -275,15 +224,9 @@ class Iphone1415ProMaxSixScreen extends StatelessWidget {
           style: theme.textTheme.titleMedium,
         ),
         SizedBox(height: 8.v),
-        BlocSelector<Iphone1415ProMaxSixBloc, Iphone1415ProMaxSixState,
-            TextEditingController?>(
-          selector: (state) => state.cityController,
-          builder: (context, cityController) {
-            return CustomTextFormField(
-              controller: cityController,
-              hintText: "lbl_enter_your_city".tr,
-            );
-          },
+        CustomTextFormField(
+          controller: controller.cityController,
+          hintText: "lbl_enter_your_city".tr,
         )
       ],
     );

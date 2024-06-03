@@ -5,19 +5,13 @@ enum BottomBarEnum { Home, Booknow, tf, Instagram, Store }
 // ignore_for_file: must_be_immutable
 
 // ignore_for_file: must_be_immutable
-class CustomBottomBar extends StatefulWidget {
-  CustomBottomBar({this.onChanged});
+class CustomBottomBar extends StatelessWidget {
+  CustomBottomBar({Key? key, this.onChanged})
+      : super(
+          key: key,
+        );
 
-  Function(BottomBarEnum)? onChanged;
-
-  @override
-  CustomBottomBarState createState() => CustomBottomBarState();
-}
-// ignore_for_file: must_be_immutable
-
-// ignore_for_file: must_be_immutable
-class CustomBottomBarState extends State<CustomBottomBar> {
-  int selectedIndex = 0;
+  RxInt selectedIndex = 0.obs;
 
   List<BottomMenuModel> bottomMenuList = [
     BottomMenuModel(
@@ -52,6 +46,8 @@ class CustomBottomBarState extends State<CustomBottomBar> {
     )
   ];
 
+  Function(BottomBarEnum)? onChanged;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -73,67 +69,68 @@ class CustomBottomBarState extends State<CustomBottomBar> {
           )
         ],
       ),
-      child: BottomNavigationBar(
-        backgroundColor: Colors.transparent,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        selectedFontSize: 0,
-        elevation: 0,
-        currentIndex: selectedIndex,
-        type: BottomNavigationBarType.fixed,
-        items: List.generate(bottomMenuList.length, (index) {
-          return BottomNavigationBarItem(
-            icon: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CustomImageView(
-                  imagePath: bottomMenuList[index].icon,
-                  height: 24.adaptSize,
-                  width: 24.adaptSize,
-                  color: theme.colorScheme.onPrimaryContainer.withOpacity(1),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 1.v),
-                  child: Text(
-                    bottomMenuList[index].title ?? "",
-                    style: theme.textTheme.bodyMedium!.copyWith(
-                      color:
-                          theme.colorScheme.onPrimaryContainer.withOpacity(1),
-                    ),
+      child: Obx(
+        () => BottomNavigationBar(
+          backgroundColor: Colors.transparent,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          selectedFontSize: 0,
+          elevation: 0,
+          currentIndex: selectedIndex.value,
+          type: BottomNavigationBarType.fixed,
+          items: List.generate(bottomMenuList.length, (index) {
+            return BottomNavigationBarItem(
+              icon: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CustomImageView(
+                    imagePath: bottomMenuList[index].icon,
+                    height: 24.adaptSize,
+                    width: 24.adaptSize,
+                    color: theme.colorScheme.onPrimaryContainer.withOpacity(1),
                   ),
-                )
-              ],
-            ),
-            activeIcon: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CustomImageView(
-                  imagePath: bottomMenuList[index].activeIcon,
-                  height: 20.adaptSize,
-                  width: 20.adaptSize,
-                  color: theme.colorScheme.primary,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 3.v),
-                  child: Text(
-                    bottomMenuList[index].title ?? "",
-                    style: theme.textTheme.titleSmall!.copyWith(
-                      color: theme.colorScheme.primary,
+                  Padding(
+                    padding: EdgeInsets.only(top: 1.v),
+                    child: Text(
+                      bottomMenuList[index].title ?? "",
+                      style: theme.textTheme.bodyMedium!.copyWith(
+                        color:
+                            theme.colorScheme.onPrimaryContainer.withOpacity(1),
+                      ),
                     ),
+                  )
+                ],
+              ),
+              activeIcon: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CustomImageView(
+                    imagePath: bottomMenuList[index].activeIcon,
+                    height: 20.adaptSize,
+                    width: 20.adaptSize,
+                    color: theme.colorScheme.primary,
                   ),
-                )
-              ],
-            ),
-            label: '',
-          );
-        }),
-        onTap: (index) {
-          selectedIndex = index;
-          widget.onChanged?.call(bottomMenuList[index].type);
-          setState(() {});
-        },
+                  Padding(
+                    padding: EdgeInsets.only(top: 3.v),
+                    child: Text(
+                      bottomMenuList[index].title ?? "",
+                      style: theme.textTheme.titleSmall!.copyWith(
+                        color: theme.colorScheme.primary,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              label: '',
+            );
+          }),
+          onTap: (index) {
+            selectedIndex.value = index;
+            onChanged?.call(bottomMenuList[index].type);
+          },
+        ),
       ),
     );
   }

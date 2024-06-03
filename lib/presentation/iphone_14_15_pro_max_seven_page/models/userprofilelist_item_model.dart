@@ -6,14 +6,14 @@ import '../../../core/app_export.dart';
 // ignore_for_file: must_be_immutable
 class UserprofilelistItemModel {
   UserprofilelistItemModel({this.userImage, this.sportName, this.id}) {
-    userImage = userImage ?? ImageConstant.imgRectangle9;
-    sportName = sportName ?? "Badminton";
-    id = id ?? "";
+    userImage = userImage ?? Rx(ImageConstant.imgRectangle9);
+    sportName = sportName ?? Rx("Badminton");
+    id = id ?? Rx("");
   }
 
-  String? userImage;
+  Rx<String>? userImage;
 
-  String? sportName;
+  Rx<String>? sportName;
 
-  String? id;
+  Rx<String>? id;
 }

@@ -3,92 +3,64 @@ import '../../core/app_export.dart';
 import '../../widgets/app_bar/appbar_title.dart';
 import '../../widgets/app_bar/custom_app_bar.dart';
 import '../iphone_14_15_pro_max_nine_page/iphone_14_15_pro_max_nine_page.dart';
-import 'bloc/iphone_14_15_pro_max_nine_tab_container_bloc.dart';
+import 'controller/iphone_14_15_pro_max_nine_tab_container_controller.dart';
 import 'models/iphone_14_15_pro_max_nine_tab_container_model.dart'; // ignore_for_file: must_be_immutable
 
-class Iphone1415ProMaxNineTabContainerPage extends StatefulWidget {
-  const Iphone1415ProMaxNineTabContainerPage({Key? key})
+// ignore_for_file: must_be_immutable
+class Iphone1415ProMaxNineTabContainerPage extends StatelessWidget {
+  Iphone1415ProMaxNineTabContainerPage({Key? key})
       : super(
           key: key,
         );
 
-  @override
-  Iphone1415ProMaxNineTabContainerPageState createState() =>
-      Iphone1415ProMaxNineTabContainerPageState();
-  static Widget builder(BuildContext context) {
-    return BlocProvider<Iphone1415ProMaxNineTabContainerBloc>(
-      create: (context) => Iphone1415ProMaxNineTabContainerBloc(
-          Iphone1415ProMaxNineTabContainerState(
-        iphone1415ProMaxNineTabContainerModelObj:
-            Iphone1415ProMaxNineTabContainerModel(),
-      ))
-        ..add(Iphone1415ProMaxNineTabContainerInitialEvent()),
-      child: Iphone1415ProMaxNineTabContainerPage(),
-    );
-  }
-}
-// ignore_for_file: must_be_immutable
-
-// ignore_for_file: must_be_immutable
-class Iphone1415ProMaxNineTabContainerPageState
-    extends State<Iphone1415ProMaxNineTabContainerPage>
-    with TickerProviderStateMixin {
-  late TabController tabviewController;
-
-  @override
-  void initState() {
-    super.initState();
-    tabviewController = TabController(length: 2, vsync: this);
-  }
+  Iphone1415ProMaxNineTabContainerController controller = Get.put(
+      Iphone1415ProMaxNineTabContainerController(
+          Iphone1415ProMaxNineTabContainerModel().obs));
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<Iphone1415ProMaxNineTabContainerBloc,
-        Iphone1415ProMaxNineTabContainerState>(
-      builder: (context, state) {
-        return SafeArea(
-          child: Scaffold(
-            extendBody: true,
-            extendBodyBehindAppBar: true,
-            backgroundColor: Colors.transparent,
-            appBar: _buildAppBar(context),
-            body: Container(
-              width: SizeUtils.width,
-              height: SizeUtils.height,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment(0.4, 0.97),
-                  end: Alignment(0.4, 0.02),
-                  colors: [appTheme.deepPurple800, appTheme.indigo900],
-                ),
-              ),
-              child: SizedBox(
-                child: Column(
-                  children: [
-                    SizedBox(height: 20.v),
-                    _buildTabview(context),
-                    SizedBox(
-                      height: 686.v,
-                      child: TabBarView(
-                        controller: tabviewController,
-                        children: [
-                          Iphone1415ProMaxNinePage.builder(context),
-                          Iphone1415ProMaxNinePage.builder(context)
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
+    return SafeArea(
+      child: Scaffold(
+        extendBody: true,
+        extendBodyBehindAppBar: true,
+        backgroundColor: Colors.transparent,
+        appBar: _buildAppBar(),
+        body: Container(
+          width: SizeUtils.width,
+          height: SizeUtils.height,
+          padding: EdgeInsets.only(top: 48.v),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment(0.4, 0.97),
+              end: Alignment(0.4, 0.02),
+              colors: [appTheme.deepPurple800, appTheme.indigo900],
             ),
           ),
-        );
-      },
+          child: SizedBox(
+            child: Column(
+              children: [
+                SizedBox(height: 20.v),
+                _buildTabview(),
+                SizedBox(
+                  height: 686.v,
+                  child: TabBarView(
+                    controller: controller.tabviewController,
+                    children: [
+                      Iphone1415ProMaxNinePage(),
+                      Iphone1415ProMaxNinePage()
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 
   /// Section Widget
-  PreferredSizeWidget _buildAppBar(BuildContext context) {
+  PreferredSizeWidget _buildAppBar() {
     return CustomAppBar(
       height: 48.v,
       title: AppbarTitle(
@@ -99,12 +71,12 @@ class Iphone1415ProMaxNineTabContainerPageState
   }
 
   /// Section Widget
-  Widget _buildTabview(BuildContext context) {
+  Widget _buildTabview() {
     return SizedBox(
       height: 43.v,
       width: 375.h,
       child: TabBar(
-        controller: tabviewController,
+        controller: controller.tabviewController,
         labelPadding: EdgeInsets.zero,
         labelColor: theme.colorScheme.onPrimaryContainer.withOpacity(1),
         labelStyle: TextStyle(

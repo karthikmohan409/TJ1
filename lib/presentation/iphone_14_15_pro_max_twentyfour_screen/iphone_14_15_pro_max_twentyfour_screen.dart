@@ -10,30 +10,16 @@ import '../../widgets/custom_elevated_button.dart';
 import '../iphone_14_15_pro_max_nine_tab_container_page/iphone_14_15_pro_max_nine_tab_container_page.dart';
 import '../iphone_14_15_pro_max_seven_page/iphone_14_15_pro_max_seven_page.dart';
 import '../iphone_14_15_pro_max_sixteen_page/iphone_14_15_pro_max_sixteen_page.dart';
-import 'bloc/iphone_14_15_pro_max_twentyfour_bloc.dart';
-import 'models/iphone_14_15_pro_max_twentyfour_model.dart';
+import 'controller/iphone_14_15_pro_max_twentyfour_controller.dart';
 import 'models/programssection_item_model.dart';
 import 'widgets/programssection_item_widget.dart'; // ignore_for_file: must_be_immutable
 
-// ignore_for_file: must_be_immutable
-class Iphone1415ProMaxTwentyfourScreen extends StatelessWidget {
-  Iphone1415ProMaxTwentyfourScreen({Key? key})
+class Iphone1415ProMaxTwentyfourScreen
+    extends GetWidget<Iphone1415ProMaxTwentyfourController> {
+  const Iphone1415ProMaxTwentyfourScreen({Key? key})
       : super(
           key: key,
         );
-
-  GlobalKey<NavigatorState> navigatorKey = GlobalKey();
-
-  static Widget builder(BuildContext context) {
-    return BlocProvider<Iphone1415ProMaxTwentyfourBloc>(
-      create: (context) =>
-          Iphone1415ProMaxTwentyfourBloc(Iphone1415ProMaxTwentyfourState(
-        iphone1415ProMaxTwentyfourModelObj: Iphone1415ProMaxTwentyfourModel(),
-      ))
-            ..add(Iphone1415ProMaxTwentyfourInitialEvent()),
-      child: Iphone1415ProMaxTwentyfourScreen(),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +30,7 @@ class Iphone1415ProMaxTwentyfourScreen extends StatelessWidget {
         body: Container(
           width: SizeUtils.width,
           height: SizeUtils.height,
+          padding: EdgeInsets.only(bottom: 79.v),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment(0.4, 0.97),
@@ -54,26 +41,26 @@ class Iphone1415ProMaxTwentyfourScreen extends StatelessWidget {
           child: SizedBox(
             child: Column(
               children: [
-                _buildHeaderSection(context),
+                _buildHeaderSection(),
                 Column(
                   children: [
                     SizedBox(height: 14.v),
-                    _buildDescriptionSection(context),
+                    _buildDescriptionSection(),
                     SizedBox(height: 20.v),
-                    _buildProgramsSection(context)
+                    _buildProgramsSection()
                   ],
                 )
               ],
             ),
           ),
         ),
-        bottomNavigationBar: _buildFooterSection(context),
+        bottomNavigationBar: _buildFooterSection(),
       ),
     );
   }
 
   /// Section Widget
-  Widget _buildHeaderSection(BuildContext context) {
+  Widget _buildHeaderSection() {
     return SizedBox(
       height: 264.v,
       width: double.maxFinite,
@@ -111,7 +98,7 @@ class Iphone1415ProMaxTwentyfourScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildDescriptionSection(BuildContext context) {
+  Widget _buildDescriptionSection() {
     return SizedBox(
       height: 123.v,
       width: double.maxFinite,
@@ -148,55 +135,49 @@ class Iphone1415ProMaxTwentyfourScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildProgramsSection(BuildContext context) {
+  Widget _buildProgramsSection() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 28.h),
-      child: BlocSelector<Iphone1415ProMaxTwentyfourBloc,
-          Iphone1415ProMaxTwentyfourState, Iphone1415ProMaxTwentyfourModel?>(
-        selector: (state) => state.iphone1415ProMaxTwentyfourModelObj,
-        builder: (context, iphone1415ProMaxTwentyfourModelObj) {
-          return GroupedListView<ProgramssectionItemModel, String>(
-            shrinkWrap: true,
-            stickyHeaderBackgroundColor: Colors.transparent,
-            elements:
-                iphone1415ProMaxTwentyfourModelObj?.programssectionItemList ??
-                    [],
-            groupBy: (element) => element.groupBy!,
-            sort: false,
-            groupSeparatorBuilder: (String value) {
-              return Padding(
-                padding: EdgeInsets.only(
-                  top: 21.v,
-                  bottom: 18.v,
+      child: Obx(
+        () => GroupedListView<ProgramssectionItemModel, String>(
+          shrinkWrap: true,
+          stickyHeaderBackgroundColor: Colors.transparent,
+          elements: controller.iphone1415ProMaxTwentyfourModelObj.value
+              .programssectionItemList.value,
+          groupBy: (element) => element.groupBy!.value,
+          sort: false,
+          groupSeparatorBuilder: (String value) {
+            return Padding(
+              padding: EdgeInsets.only(
+                top: 21.v,
+                bottom: 18.v,
+              ),
+              child: Text(
+                value,
+                style: theme.textTheme.titleMedium!.copyWith(
+                  color: theme.colorScheme.onPrimaryContainer.withOpacity(1),
                 ),
-                child: Text(
-                  value,
-                  style: theme.textTheme.titleMedium!.copyWith(
-                    color: theme.colorScheme.onPrimaryContainer.withOpacity(1),
-                  ),
-                ),
-              );
-            },
-            itemBuilder: (context, model) {
-              return ProgramssectionItemWidget(
-                model,
-              );
-            },
-            separator: SizedBox(
-              height: 13.v,
-            ),
-          );
-        },
+              ),
+            );
+          },
+          itemBuilder: (context, model) {
+            return ProgramssectionItemWidget(
+              model,
+            );
+          },
+          separator: SizedBox(
+            height: 13.v,
+          ),
+        ),
       ),
     );
   }
 
   /// Section Widget
-  Widget _buildFooterSection(BuildContext context) {
+  Widget _buildFooterSection() {
     return CustomBottomBar(
       onChanged: (BottomBarEnum type) {
-        Navigator.pushNamed(
-            navigatorKey.currentContext!, getCurrentRoute(type));
+        Get.toNamed(getCurrentRoute(type), id: 1);
       },
     );
   }
@@ -220,17 +201,14 @@ class Iphone1415ProMaxTwentyfourScreen extends StatelessWidget {
   }
 
   ///Handling page based on route
-  Widget getCurrentPage(
-    BuildContext context,
-    String currentRoute,
-  ) {
+  Widget getCurrentPage(String currentRoute) {
     switch (currentRoute) {
       case AppRoutes.iphone1415ProMaxSevenPage:
-        return Iphone1415ProMaxSevenPage.builder(context);
+        return Iphone1415ProMaxSevenPage();
       case AppRoutes.iphone1415ProMaxNineTabContainerPage:
-        return Iphone1415ProMaxNineTabContainerPage.builder(context);
+        return Iphone1415ProMaxNineTabContainerPage();
       case AppRoutes.iphone1415ProMaxSixteenPage:
-        return Iphone1415ProMaxSixteenPage.builder(context);
+        return Iphone1415ProMaxSixteenPage();
       default:
         return DefaultWidget();
     }
